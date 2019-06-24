@@ -1,0 +1,4 @@
+enum PinType {
+  raspberry,
+  arduinoMega
+}

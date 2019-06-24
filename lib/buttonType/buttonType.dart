@@ -1,0 +1,3 @@
+enum buttonTyp {
+  single, group
+}

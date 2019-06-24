@@ -1,14 +1,16 @@
 import './entity.dart';
+import 'package:lsd/Controller/controllerType.dart';
 
 class Pin extends Entity {
   static const int _MAX_FREQUENCY = 300;
   static const int _MAX_BRIGHTNESS = 100;
 
   final int pinNr;
+  final PinType pinTyp;
   int frequency;
   int brightness;
 
-  Pin(this.pinNr) {
+  Pin(this.pinNr, this.pinTyp) {
     frequency = 200;
     brightness = 100;
   }
