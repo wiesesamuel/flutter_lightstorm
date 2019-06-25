@@ -1,6 +1,6 @@
 import './entity.dart';
 import 'package:lsd/Controller/Controller.dart';
-import 'package:lsd/Controller/controllerType.dart';
+import 'package:lsd/entity/pin_type.dart';
 
 class Pin extends Entity {
   static final Controller controller = new Controller();

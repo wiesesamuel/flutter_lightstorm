@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:lsd/buttonType/button.dart';
+import 'package:lsd/entity/pin.dart';
+import 'package:lsd/entity/pin_type.dart';
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
@@ -33,6 +36,9 @@ class _MyApplication extends State<MyStatefulWidget> {
               ),
               new Divider(),
               new ListTile(
+
+              ),
+              new ListTile(
                 title: new Text('About'),
                 onTap: () {},
               ),
@@ -57,7 +63,10 @@ class _MyApplication extends State<MyStatefulWidget> {
 
             children: [
               TableRow(children: [
-                Text("bla"), Text("123"),
+                Text("bla"), Text("123"), PinButton()
+              ]),
+              TableRow(children: [
+                Text("bla"), Text("123"), PinButton()
               ]),
             ],
           )
