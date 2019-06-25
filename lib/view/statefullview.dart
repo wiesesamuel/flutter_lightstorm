@@ -63,10 +63,10 @@ class _MyApplication extends State<MyStatefulWidget> {
 
             children: [
               TableRow(children: [
-                Text("bla"), Text("123"), PinButton()
-              ]),
-              TableRow(children: [
-                Text("bla"), Text("123"), PinButton()
+                Text("groupbtn"),
+                Expanded(child: PinButton()),
+                Expanded(child: PinButton()),
+                Expanded(child: PinButton()),
               ]),
             ],
           )
