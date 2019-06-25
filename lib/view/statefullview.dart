@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:math';
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
@@ -8,7 +8,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyApplication extends State<MyStatefulWidget> {
-  int _count = 0;
+  Icon _IconAF = Icon(Icons.arrow_forward);
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,26 +49,18 @@ class _MyApplication extends State<MyStatefulWidget> {
           onTap: () => print("touched it"),
 
           // table
-          child: Column(
-            // components
-            children: <Widget>[
+          child: Table(
+            border: TableBorder.all(color: Colors.black),
+            defaultVerticalAlignment: TableCellVerticalAlignment.top,
+            defaultColumnWidth: FractionColumnWidth(0.25),
 
-              Text(
-                'You have pressed the button $_count times.',
-                style: new TextStyle(color: Colors.pink, fontSize: 50),
-              ),
 
-              ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () => Colors.cyan,
-                  )
-                ],
-              ),
-
-              Text("Tapptapp"),
+            children: [
+              TableRow(children: [
+                Text("bla"), Text("123"),
+              ]),
             ],
-          ),
+          )
         )
       ),
 
@@ -78,17 +70,39 @@ class _MyApplication extends State<MyStatefulWidget> {
           height: 50.0,
         ),
       ),
+      persistentFooterButtons: <Widget>[
+        FlatButton(
+          onPressed: () => setState(() {
+            Transform.rotate(
+              angle: pi / 4,
+              child: _IconAF,
+            );
+            print("bitch0");
+          }),
+          child: _IconAF,
 
+        ),
+        FlatButton(
+          onPressed: () => setState(() {
+            print("bitch1");
+          }),
+          child: Icon(Icons.arrow_back),
+
+        )
+      ]
+
+/*
       // button located at bottom
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() {
-          _count++;
+          print("bitch");
         }),
         tooltip: 'Increment Counter',
-        child: Icon(Icons.add),
+        child: Icon(Icons.arrow_forward),
       ),
       // set location
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      */
     );
   }
 }

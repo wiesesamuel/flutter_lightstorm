@@ -1,7 +1,9 @@
 import './entity.dart';
+import 'package:lsd/Controller/Controller.dart';
 import 'package:lsd/Controller/controllerType.dart';
 
 class Pin extends Entity {
+  static final Controller controller = new Controller();
   static const int _MAX_FREQUENCY = 300;
   static const int _MAX_BRIGHTNESS = 100;
 
@@ -29,5 +31,9 @@ class Pin extends Entity {
       this.brightness = _MAX_BRIGHTNESS;
     else
       this.brightness = brightness;
+  }
+
+  void update() {
+    controller.update(this);
   }
 }
