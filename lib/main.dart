@@ -3,7 +3,6 @@
 // This sample shows adding an action to an [AppBar] that opens a shopping cart.
 
 import 'package:flutter/material.dart';
-import 'package:lsd/view/homeview.dart';
 import 'package:lsd/view/statefullview.dart';
 
 void main() => runApp(MyApp());

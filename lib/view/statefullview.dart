@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:lsd/buttonType/button.dart';
-import 'package:lsd/entity/pin.dart';
-import 'package:lsd/entity/pin_type.dart';
+import 'package:lsd/models/stripe_controller.dart';
+
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
@@ -12,6 +11,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyApplication extends State<MyStatefulWidget> {
   Icon _IconAF = Icon(Icons.arrow_forward);
+  bool buttonstate = false;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +41,7 @@ class _MyApplication extends State<MyStatefulWidget> {
               new ListTile(
                 title: new Text('About'),
                 onTap: () {},
-              ),
+              )
             ],
           )
       ),
@@ -50,7 +50,28 @@ class _MyApplication extends State<MyStatefulWidget> {
       body: Center(
 
         // touchable ~container
-        child: new InkWell(
+        child: ListView(
+          children: [
+            SwitchListTile(
+              title: Text("Funny Setting"),
+              value: buttonstate,
+              onChanged: (e) {
+                setState(() {
+                  buttonstate = !buttonstate;
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Funny Button"),
+              onTap: () {},
+            ),
+            MaterialButton(
+              child: Text("Text"),
+              onPressed: () {},
+            ),
+            StripeController()
+          ],
+        ), /*new InkWell(
           // tap action
           onTap: () => print("touched it"),
 
@@ -63,14 +84,11 @@ class _MyApplication extends State<MyStatefulWidget> {
 
             children: [
               TableRow(children: [
-                Text("groupbtn"),
-                Expanded(child: PinButton()),
-                Expanded(child: PinButton()),
-                Expanded(child: PinButton()),
+                Mate
+                //CustomButton(pin: new Pin(0, PinType.raspberry)),
               ]),
             ],
-          )
-        )
+          )*/
       ),
 
       // bottom
