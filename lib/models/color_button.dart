@@ -63,15 +63,26 @@ class _ColorButtonApp extends State<ColorButton> {
   }
 
   void updateDepiction() {
-
-    if (pressed && !disabled && color == Color.fromRGBO(0, 0, 255, 1.0)) {
-      textColor = Colors.white;
+    // check state
+    if (pressed && !disabled) {
+      // custom depictions
+      switch (color.value) {
+        // dark blue
+        case (4278190335):
+          {
+            textColor = Colors.white;
+            break;
+          }
+        // default depiction
+        default:
+          textColor = Colors.black;
+      }
     } else
       textColor = Colors.black;
   }
 }
 
-// accessible function holder
+// accessible functions holder
 class ReactiveController {
   Function toggleStatus;
   Function isPressed;
