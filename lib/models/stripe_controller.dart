@@ -6,10 +6,10 @@ class StripeController extends StatefulWidget {
   StripeController({Key key}) : super(key: key);
 
   @override
-  _StripeControllerApp createState() => _StripeControllerApp();
+  _StripeControllerState createState() => _StripeControllerState();
 }
 
-class _StripeControllerApp extends State<StripeController> {
+class _StripeControllerState extends State<StripeController> {
   // children
   List<ColorButton> buttons = [
     ColorButton(name: "Red", color: Colors.red),
@@ -46,7 +46,11 @@ class _StripeControllerApp extends State<StripeController> {
     children.addAll(buttons);
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-        child: Row(children: children));
+        child: Row(
+          children: children,
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+        ));
   }
 
   void updateDepiction() {
