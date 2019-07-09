@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/json/jsonHanlder.dart';
 import 'dart:math';
 import 'package:lsd/models/stripe_controller.dart';
 
@@ -12,6 +13,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyApplication extends State<MyStatefulWidget> {
   Icon _IconAF = Icon(Icons.arrow_forward);
   bool buttonstate = false;
+  JsonHandler jsonHandler = JsonHandler();
 
   Widget build(BuildContext context) {
     return Scaffold(

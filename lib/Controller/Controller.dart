@@ -1,4 +1,4 @@
-import 'package:lsd/entity/pin.dart';
+import 'package:lsd/pin/pin.dart';
 
 
 class Controller {

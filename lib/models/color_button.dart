@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/pin/pin.dart';
 
 class ColorButton extends StatefulWidget {
-  final Color color;
-  final String name;
-  final ReactiveController reactiveController;
+  Color color;
+  String name;
+  Pin pin;
+  ReactiveController reactiveController;
 
-  ColorButton({Key key, this.color, @required this.name})
+  ColorButton({Key key, this.color, @required this.name, this.pin})
       : reactiveController = ReactiveController(),
         super(key: key);
 
@@ -17,6 +19,22 @@ class ColorButton extends StatefulWidget {
   void toggleStatus() => reactiveController.toggleStatus();
 
   get isPressed => reactiveController.isPressed();
+
+  void update() => pin.update();
+
+  Map<String, dynamic> getJson() =>
+    {
+      'name': name,
+      'color': color,
+      'pin': pin.toJson(),
+    };
+
+  ColorButton.fromJson(Map<String, dynamic> json) {
+    color = json['color'];
+    name = json['name'];
+    pin = Pin.fromJson(json['pin']);
+  }
+
 }
 
 class _ColorButtonApp extends State<ColorButton> {
@@ -87,4 +105,6 @@ class _ColorButtonApp extends State<ColorButton> {
 class ReactiveController {
   Function toggleStatus;
   Function isPressed;
+  Function getJson;
+  Function update;
 }
