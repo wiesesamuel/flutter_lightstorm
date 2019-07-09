@@ -1,6 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:lsd/json/jsonHanlder.dart';
-import 'dart:math';
+import 'package:lsd/models/buttonGenerator.dart';
 import 'package:lsd/models/stripe_controller.dart';
 
 class MyStatefulWidget extends StatefulWidget {
@@ -63,38 +65,11 @@ class _MyApplication extends State<MyStatefulWidget> {
                 });
               },
             ),
-            ListTile(
-              title: Text("Tisch"),
-              subtitle: Text("Currently on"),
-              trailing: StripeController(),
-              selected: false,
-              onTap: () {},
-            ),
+            StripeController(name: "Tisch", buttonGroup: ButtonGroup.RGB),
             MaterialButton(
               child: Text("Text"),
               onPressed: () {},
             ),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
-            StripeController(),
           ],
         ), /*new InkWell(
           // tap action
