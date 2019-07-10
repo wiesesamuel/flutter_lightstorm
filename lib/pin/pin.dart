@@ -13,14 +13,20 @@ class Pin {
   final PinType pinTyp;
 
   // state
+
   int frequency;
   int brightness;
-  ModeType mode;
+  List<bool> states = List(ModeType.values.length);
   List<int> group;
+
 
   Pin(this.pinNr, this.pinTyp) {
     frequency = 200;
     brightness = 100;
+  }
+
+  void setState(ModeType stateType) {
+    states[stateType.index] = !states[stateType.index];
   }
 
   int getFrequency() => frequency;
@@ -60,7 +66,7 @@ class Pin {
         pinTyp = json['pinTyp'],
         frequency = json['frequency'],
         brightness = json['brightness'],
-        mode = json['mode'],
+        states = json['states'],
         group = json['group'];
 
   Map<String, dynamic> toJson() => {
@@ -68,7 +74,7 @@ class Pin {
         'pinTyp': pinTyp,
         'frequency': frequency,
         'brightness': brightness,
-        'mode': mode,
+        'states': states,
         'group': group,
       };
 }

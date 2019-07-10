@@ -56,6 +56,7 @@ class _MyApplication extends State<MyStatefulWidget> {
         // touchable ~container
         child: ListView(
           children: [
+            /*
             SwitchListTile(
               title: Text("Funny Setting"),
               value: buttonstate,
@@ -64,12 +65,11 @@ class _MyApplication extends State<MyStatefulWidget> {
                   buttonstate = !buttonstate;
                 });
               },
-            ),
+            ),*/
             StripeController(name: "Tisch", buttonGroup: ButtonGroup.RGB),
-            MaterialButton(
-              child: Text("Text"),
-              onPressed: () {},
-            ),
+            StripeController(name: "Fenster", buttonGroup: ButtonGroup.RGB),
+            StripeController(name: "Schrank", buttonGroup: ButtonGroup.RGB),
+
           ],
         ), /*new InkWell(
           // tap action

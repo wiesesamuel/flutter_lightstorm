@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/models/buttonGenerator.dart';
+import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
 class ColorButton extends StatefulWidget {
+
   Color color;
   String name;
   Pin pin;
@@ -20,14 +23,20 @@ class ColorButton extends StatefulWidget {
 
   get isPressed => reactiveController.isPressed();
 
-  void update() => pin.update();
+  void setState(ModeType mode) {
+    pin.setState(mode);
+  }
+
+  void update() {
+    pin.update();
+  }
 
   Map<String, dynamic> getJson() =>
-    {
-      'name': name,
-      'color': color,
-      'pin': pin.toJson(),
-    };
+      {
+        'name': name,
+        'color': color,
+        'pin': pin.toJson(),
+      };
 
   ColorButton.fromJson(Map<String, dynamic> json) {
     color = json['color'];
@@ -44,60 +53,60 @@ class _ColorButtonApp extends State<ColorButton> {
   bool disabled = false;
 
   // depiction
-  Color color = Colors.black;
-  Color textColor = Colors.black;
+  Color mainFrontColor = Colors.grey;
+  Color disabledFrontColor = Colors.black;
   final String name;
 
   // functions
   final ReactiveController reactiveController;
 
-  _ColorButtonApp(this.color, this.name, this.reactiveController) {
+  _ColorButtonApp(this.mainFrontColor, this.name, this.reactiveController) {
     reactiveController.toggleStatus = () {
       setState(() {
         disabled = !disabled;
-        updateDepiction();
+        reactiveController.update();
       });
     };
     reactiveController.isPressed = () {
       return pressed;
     };
+
+    disabledFrontColor = mainFrontColor.withOpacity(0.5);
   }
 
   Widget build(BuildContext context) {
     return ButtonTheme(
-        minWidth: 10,
-        height: 40,
-        buttonColor: (pressed && !disabled) ? color : Colors.white,
+        minWidth: 50,
+        height: 30,
+        buttonColor: getFrontColor(),
         child: RaisedButton(
           onPressed: () {
             setState(() {
               pressed = !pressed;
-              updateDepiction();
+              reactiveController.update();
             });
           },
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: Text(name),
-          textColor: textColor,
+          textColor: getTextColor(),
         ));
   }
 
-  void updateDepiction() {
-    // check state
-    if (pressed && !disabled) {
-      // custom depictions
-      switch (color.value) {
-        // dark blue
-        case (4278190335):
-          {
-            textColor = Colors.white;
-            break;
-          }
-        // default depiction
-        default:
-          textColor = Colors.black;
+  Color getFrontColor() {
+    if (pressed) {
+      if (disabled) {
+        return disabledFrontColor;
       }
-    } else
-      textColor = Colors.black;
+      return mainFrontColor;
+    }
+    return Colors.white;
+  }
+
+  Color getTextColor() {
+    if (pressed) {
+      return buttonTextColorConverter.getTextColor(mainFrontColor);
+    }
+    return Colors.black;
   }
 }
 
@@ -107,4 +116,5 @@ class ReactiveController {
   Function isPressed;
   Function getJson;
   Function update;
+  Function setState;
 }

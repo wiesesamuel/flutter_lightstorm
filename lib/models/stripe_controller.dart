@@ -4,7 +4,8 @@ import 'buttonGenerator.dart';
 import 'color_button.dart';
 
 class StripeController extends StatefulWidget {
-  static final ButtonGroupConverter _buttonGroupConverter = ButtonGroupConverter();
+  static final ButtonGroupConverter _buttonGroupConverter =
+      ButtonGroupConverter();
   final ButtonGroup buttonGroup;
   final String name;
 
@@ -26,11 +27,12 @@ class _StripeControllerState extends State<StripeController> {
   List<ColorButton> buttons;
 
   // state
-  bool controllerState = false;
+  bool controllerState = true;
 
   // depiction
   String name;
   Color controllerColor = Colors.red;
+  Text subtitle = Text("");
 
   _StripeControllerState(this.name, this.buttons);
 
@@ -57,27 +59,30 @@ class _StripeControllerState extends State<StripeController> {
               */
     ];
     children.addAll(buttons);
-    return ListTile(
-      title: Text(name),
-      subtitle: Text(controllerState ? on : off),
-      trailing: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          child: Row(
-            children: children,
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-          )),
-      selected: controllerState,
-      onTap: () {
-        setState(() {
-          controllerState != controllerState;
-          print(controllerState);
-          updateDepiction();
-          buttons.forEach((b) {
-            b.toggleStatus();
+    return Container(
+      //height: 30.0,
+      child: ListTile(
+        title: Text(name),
+        //subtitle: Text(controllerState ? on : off),
+        trailing: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+            child: Row(
+              children: children,
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+            )),
+        selected: controllerState,
+        onTap: () {
+          setState(() {
+            controllerState = !controllerState;
+            print(controllerState);
+            updateDepiction();
+            buttons.forEach((b) {
+              b.toggleStatus();
+            });
           });
-        });
-      },
+        },
+      ),
     );
   }
 

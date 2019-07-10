@@ -2,6 +2,24 @@ import 'package:flutter/material.dart';
 
 import 'color_button.dart';
 
+enum ButtonTextStates {
+  on, off
+}
+
+final ButtonTextColorConverter buttonTextColorConverter = ButtonTextColorConverter();
+
+class ButtonTextColorConverter {
+  Color getTextColor(Color color) {
+    switch (color.value) {
+    // dark blue
+      case (4278190335):
+        return Colors.white;
+    }
+    return Colors.black;
+  }
+}
+
+
 enum ButtonSingle {
   R, G, B
 }
