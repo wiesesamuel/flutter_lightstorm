@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lsd/json/jsonHanlder.dart';
 import 'package:lsd/models/buttonGenerator.dart';
+import 'package:lsd/models/master_controller.dart';
 import 'package:lsd/models/stripe_controller.dart';
 
 class MyStatefulWidget extends StatefulWidget {
@@ -13,9 +14,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyApplication extends State<MyStatefulWidget> {
-  Icon _IconAF = Icon(Icons.arrow_forward);
-  bool buttonstate = false;
-  JsonHandler jsonHandler = JsonHandler();
+  StripeHandler stripeHandler = StripeHandler();
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,7 @@ class _MyApplication extends State<MyStatefulWidget> {
       drawer: new Drawer(
           child: new ListView(
             children: <Widget> [
-              new DrawerHeader(child: new Text('Header'),),
+              new DrawerHeader(child: new Text('LED'),),
               new ListTile(
                 title: new Text('First Menu Item'),
                 onTap: () {},
@@ -39,9 +39,6 @@ class _MyApplication extends State<MyStatefulWidget> {
                 onTap: () {},
               ),
               new Divider(),
-              new ListTile(
-
-              ),
               new ListTile(
                 title: new Text('About'),
                 onTap: () {},
@@ -56,20 +53,7 @@ class _MyApplication extends State<MyStatefulWidget> {
         // touchable ~container
         child: ListView(
           children: [
-            /*
-            SwitchListTile(
-              title: Text("Funny Setting"),
-              value: buttonstate,
-              onChanged: (e) {
-                setState(() {
-                  buttonstate = !buttonstate;
-                });
-              },
-            ),*/
-            StripeController(name: "Tisch", buttonGroup: ButtonGroup.RGB),
-            StripeController(name: "Fenster", buttonGroup: ButtonGroup.RGB),
-            StripeController(name: "Schrank", buttonGroup: ButtonGroup.RGB),
-
+            stripeHandler,
           ],
         ), /*new InkWell(
           // tap action
@@ -97,6 +81,7 @@ class _MyApplication extends State<MyStatefulWidget> {
           height: 50.0,
         ),
       ),
+      /*
       persistentFooterButtons: <Widget>[
         FlatButton(
           onPressed: () => setState(() {
@@ -116,7 +101,7 @@ class _MyApplication extends State<MyStatefulWidget> {
           child: Icon(Icons.arrow_back),
 
         )
-      ]
+      ]*/
 
 /*
       // button located at bottom

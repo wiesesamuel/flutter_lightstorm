@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/Controller/Controller.dart';
 import 'package:lsd/models/buttonGenerator.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
@@ -16,20 +17,12 @@ class ColorButton extends StatefulWidget {
 
   @override
   _ColorButtonApp createState() {
-    return _ColorButtonApp(color, name, reactiveController);
+    return _ColorButtonApp(color, name, pin, reactiveController);
   }
 
   void toggleStatus() => reactiveController.toggleStatus();
-
-  get isPressed => reactiveController.isPressed();
-
-  void setState(ModeType mode) {
-    pin.setState(mode);
-  }
-
-  void update() {
-    pin.update();
-  }
+  void flipState() => pin.flipState();
+  void update() => pin.update();
 
   Map<String, dynamic> getJson() =>
       {
@@ -47,6 +40,7 @@ class ColorButton extends StatefulWidget {
 }
 
 class _ColorButtonApp extends State<ColorButton> {
+  final Pin pin;
 
   // states
   bool pressed = false;
@@ -60,17 +54,13 @@ class _ColorButtonApp extends State<ColorButton> {
   // functions
   final ReactiveController reactiveController;
 
-  _ColorButtonApp(this.mainFrontColor, this.name, this.reactiveController) {
+  _ColorButtonApp(this.mainFrontColor, this.name, this.pin, this.reactiveController) {
     reactiveController.toggleStatus = () {
       setState(() {
         disabled = !disabled;
-        reactiveController.update();
+        pin.setState(pressed && disabled);
       });
     };
-    reactiveController.isPressed = () {
-      return pressed;
-    };
-
     disabledFrontColor = mainFrontColor.withOpacity(0.5);
   }
 
@@ -83,7 +73,7 @@ class _ColorButtonApp extends State<ColorButton> {
           onPressed: () {
             setState(() {
               pressed = !pressed;
-              reactiveController.update();
+              pin.setState(pressed && disabled);
             });
           },
           padding: EdgeInsets.symmetric(horizontal: 5),
@@ -113,8 +103,4 @@ class _ColorButtonApp extends State<ColorButton> {
 // accessible functions holder
 class ReactiveController {
   Function toggleStatus;
-  Function isPressed;
-  Function getJson;
-  Function update;
-  Function setState;
 }

@@ -10,6 +10,7 @@ class StripeController extends StatefulWidget {
   ButtonGroup buttonGroup;
   String name;
   List<Pin> pins;
+  ReactiveController reactiveController;
 
   StripeController(
       {Key key,
@@ -19,11 +20,14 @@ class StripeController extends StatefulWidget {
       : this.name = name,
         this.buttonGroup = buttonGroup,
         this.pins = pins,
+        reactiveController = ReactiveController(),
         super(key: key);
 
   @override
-  _StripeControllerState createState() => _StripeControllerState(
-      name, _buttonGroupConverter.getButtons(buttonGroup, pins));
+  _StripeControllerState createState() => _StripeControllerState(name,
+      _buttonGroupConverter.getButtons(buttonGroup, pins), reactiveController);
+
+  void updateAllMembers() => reactiveController.updateAllMembers();
 
   Map<String, dynamic> getJson() => {
         'name': name,
@@ -47,11 +51,20 @@ class _StripeControllerState extends State<StripeController> {
   // state
   bool controllerState = true;
 
+  // functions
+  final ReactiveController reactiveController;
+
   // depiction
   String name;
   Text subtitle = Text("");
 
-  _StripeControllerState(this.name, this.buttons);
+  _StripeControllerState(this.name, this.buttons, this.reactiveController) {
+    reactiveController.updateAllMembers = () {
+      for (ColorButton button in buttons) {
+        button.update();
+      }
+    };
+  }
 
   Widget build(BuildContext context) {
     List<Widget> children = [
@@ -92,7 +105,6 @@ class _StripeControllerState extends State<StripeController> {
         onTap: () {
           setState(() {
             controllerState = !controllerState;
-            print(controllerState);
             buttons.forEach((b) {
               b.toggleStatus();
             });
@@ -105,6 +117,5 @@ class _StripeControllerState extends State<StripeController> {
 
 // accessible functions holder
 class ReactiveController {
-  Function update;
-  Function setState;
+  Function updateAllMembers;
 }
