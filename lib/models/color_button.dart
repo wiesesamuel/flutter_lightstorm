@@ -10,7 +10,7 @@ class ColorButton extends StatefulWidget {
   Pin pin;
   ReactiveController reactiveController;
 
-  ColorButton({Key key, this.color, @required this.name, this.pin})
+  ColorButton({Key key, this.color, @required this.name, @required this.pin})
       : reactiveController = ReactiveController(),
         super(key: key);
 

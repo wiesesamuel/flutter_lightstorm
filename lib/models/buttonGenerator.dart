@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/pin/pin.dart';
 
 import 'color_button.dart';
+
+final ButtonTextColorConverter buttonTextColorConverter = ButtonTextColorConverter();
 
 enum ButtonTextStates {
   on, off
 }
-
-final ButtonTextColorConverter buttonTextColorConverter = ButtonTextColorConverter();
 
 class ButtonTextColorConverter {
   Color getTextColor(Color color) {
@@ -25,18 +26,19 @@ enum ButtonSingle {
 }
 
 class ButtonSingleConverter {
-  ColorButton getButton(ButtonSingle buttonSingle) {
+  ColorButton getButton(ButtonSingle buttonSingle, Pin pin) {
     switch(buttonSingle) {
       case ButtonSingle.R:
-        return ColorButton(name: "Red", color: Colors.red);
+        return ColorButton(name: "Red", color: Colors.red, pin: pin,);
       case ButtonSingle.G:
-        return ColorButton(name: "Green", color: Colors.green);
+        return ColorButton(name: "Green", color: Colors.green, pin: pin,);
       case ButtonSingle.B:
-        return ColorButton(name: "Blue", color: Color.fromRGBO(0, 0, 255, 1.0));
+        return ColorButton(name: "Blue", color: Color.fromRGBO(0, 0, 255, 1.0), pin: pin,);
     }
     return null;
   }
 }
+
 
 enum ButtonGroup { RGB }
 
@@ -44,16 +46,34 @@ class ButtonGroupConverter {
 
   ButtonSingleConverter _buttonSingleConverter = ButtonSingleConverter();
 
-  List<ColorButton> getButtons(ButtonGroup buttonGroup) {
+  List<ColorButton> getButtons(ButtonGroup buttonGroup, List<Pin> pins) {
+    checkSize(buttonGroup, pins);
     switch (buttonGroup) {
       case ButtonGroup.RGB:
         return [
-          _buttonSingleConverter.getButton(ButtonSingle.R),
-          _buttonSingleConverter.getButton(ButtonSingle.G),
-          _buttonSingleConverter.getButton(ButtonSingle.B),
+          _buttonSingleConverter.getButton(ButtonSingle.R, pins[0]),
+          _buttonSingleConverter.getButton(ButtonSingle.G, pins[1]),
+          _buttonSingleConverter.getButton(ButtonSingle.B, pins[2]),
         ];
         break;
     }
     return null;
+  }
+
+  void checkSize(ButtonGroup buttonGroup, List<Pin> pins) {
+    int pinCount = 0;
+    for (Pin pin in pins) {
+      pinCount++;
+    }
+    switch (buttonGroup) {
+      case ButtonGroup.RGB:
+        if (pinCount != 3)
+          throwWrongSizeException();
+        break;
+    }
+  }
+
+  void throwWrongSizeException() {
+    throw FormatException("Pin Size doesnt match ButtonGroup!");
   }
 }

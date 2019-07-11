@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/pin/pin.dart';
 
 import 'buttonGenerator.dart';
 import 'color_button.dart';
@@ -6,17 +7,34 @@ import 'color_button.dart';
 class StripeController extends StatefulWidget {
   static final ButtonGroupConverter _buttonGroupConverter =
       ButtonGroupConverter();
-  final ButtonGroup buttonGroup;
-  final String name;
+  ButtonGroup buttonGroup;
+  String name;
+  List<Pin> pins;
 
-  StripeController({Key key, String name, @required ButtonGroup buttonGroup})
+  StripeController(
+      {Key key,
+      String name,
+      @required ButtonGroup buttonGroup,
+      @required List<Pin> pins})
       : this.name = name,
         this.buttonGroup = buttonGroup,
+        this.pins = pins,
         super(key: key);
 
   @override
   _StripeControllerState createState() => _StripeControllerState(
-      name, _buttonGroupConverter.getButtons(buttonGroup));
+      name, _buttonGroupConverter.getButtons(buttonGroup, pins));
+
+  Map<String, dynamic> getJson() => {
+        'name': name,
+        'buttonGroup': buttonGroup,
+      };
+
+  StripeController.fromJson(Map<String, dynamic> json) {
+    pins = List();
+    name = json['name'];
+    buttonGroup = json['buttonGroup'];
+  }
 }
 
 class _StripeControllerState extends State<StripeController> {
@@ -31,7 +49,6 @@ class _StripeControllerState extends State<StripeController> {
 
   // depiction
   String name;
-  Color controllerColor = Colors.red;
   Text subtitle = Text("");
 
   _StripeControllerState(this.name, this.buttons);
@@ -76,7 +93,6 @@ class _StripeControllerState extends State<StripeController> {
           setState(() {
             controllerState = !controllerState;
             print(controllerState);
-            updateDepiction();
             buttons.forEach((b) {
               b.toggleStatus();
             });
@@ -85,11 +101,10 @@ class _StripeControllerState extends State<StripeController> {
       ),
     );
   }
+}
 
-  void updateDepiction() {
-    if (controllerState)
-      controllerColor = Colors.blueGrey;
-    else
-      controllerColor = Colors.red;
-  }
+// accessible functions holder
+class ReactiveController {
+  Function update;
+  Function setState;
 }
