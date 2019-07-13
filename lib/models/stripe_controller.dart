@@ -5,12 +5,15 @@ import 'buttonGenerator.dart';
 import 'color_button.dart';
 
 class StripeController extends StatefulWidget {
+  // converter
   static final ButtonGroupConverter _buttonGroupConverter =
       ButtonGroupConverter();
-  ButtonGroup buttonGroup;
-  String name;
-  List<Pin> pins;
-  ReactiveController reactiveController;
+
+  // settings
+  final ButtonGroup buttonGroup;
+  final String name;
+  final List<Pin> pins;
+  final ReactiveController reactiveController;
 
   StripeController(
       {Key key,
@@ -28,7 +31,7 @@ class StripeController extends StatefulWidget {
       _buttonGroupConverter.getButtons(buttonGroup, pins), reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
-
+/*
   Map<String, dynamic> getJson() => {
         'name': name,
         'buttonGroup': buttonGroup,
@@ -39,6 +42,7 @@ class StripeController extends StatefulWidget {
     name = json['name'];
     buttonGroup = json['buttonGroup'];
   }
+  */
 }
 
 class _StripeControllerState extends State<StripeController> {
@@ -60,9 +64,9 @@ class _StripeControllerState extends State<StripeController> {
 
   _StripeControllerState(this.name, this.buttons, this.reactiveController) {
     reactiveController.updateAllMembers = () {
-      for (ColorButton button in buttons) {
+      buttons.forEach((button) {
         button.update();
-      }
+      });
     };
   }
 

@@ -6,19 +6,21 @@ import 'package:lsd/pin/pin_type.dart';
 
 import 'buttonGenerator.dart';
 
-class StripeHandler extends StatefulWidget {
-  ReactiveController reactiveController;
+class MasterController extends StatefulWidget {
+  final ReactiveController reactiveController;
 
-  StripeHandler({Key key}) : super(key: key);
+  MasterController({Key key}) :
+        reactiveController = ReactiveController(),
+        super(key: key);
 
   @override
-  _StripeHandlerState createState() =>
-      _StripeHandlerState(reactiveController);
+  _MasterControllerState createState() =>
+      _MasterControllerState(reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
 }
 
-class _StripeHandlerState extends State<StripeHandler> {
+class _MasterControllerState extends State<MasterController> {
   // children
   List<StripeController> stripes = [
     StripeController(name: "Tisch", buttonGroup: ButtonGroup.RGB, pins: [
@@ -80,16 +82,16 @@ class _StripeHandlerState extends State<StripeHandler> {
   // functions
   final ReactiveController reactiveController;
 
-  _StripeHandlerState(this.reactiveController) {
+  _MasterControllerState(this.reactiveController) {
     reactiveController.updateAllMembers = () {
-      for (StripeController controller in stripes) {
-        controller.updateAllMembers();
-      }
+      stripes.forEach((stripe) {
+        stripe.updateAllMembers();
+      });
     };
   }
 
   Widget build(BuildContext context) {
-    return ListView(children: stripes);
+    return stripes;
   }
 }
 

@@ -6,10 +6,10 @@ import 'package:lsd/pin/pin.dart';
 
 class ColorButton extends StatefulWidget {
 
-  Color color;
-  String name;
-  Pin pin;
-  ReactiveController reactiveController;
+  final Color color;
+  final String name;
+  final Pin pin;
+  final ReactiveController reactiveController;
 
   ColorButton({Key key, this.color, @required this.name, @required this.pin})
       : reactiveController = ReactiveController(),
@@ -24,6 +24,7 @@ class ColorButton extends StatefulWidget {
   void flipState() => pin.flipState();
   void update() => pin.update();
 
+  /*
   Map<String, dynamic> getJson() =>
       {
         'name': name,
@@ -36,7 +37,7 @@ class ColorButton extends StatefulWidget {
     name = json['name'];
     pin = Pin.fromJson(json['pin']);
   }
-
+*/
 }
 
 class _ColorButtonApp extends State<ColorButton> {

@@ -19,6 +19,9 @@ class Pin {
   List<int> group;
 
   Pin(this.pinNr, this.pinTyp) {
+    states.forEach((state) {
+      state = true;
+    });
     frequency = 200;
     brightness = 100;
   }

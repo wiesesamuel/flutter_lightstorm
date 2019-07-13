@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:lsd/json/jsonHanlder.dart';
 import 'package:lsd/models/buttonGenerator.dart';
+import 'package:lsd/models/color_button.dart';
 import 'package:lsd/models/master_controller.dart';
 import 'package:lsd/models/stripe_controller.dart';
+import 'package:lsd/pin/pin.dart';
+import 'package:lsd/pin/pin_type.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
@@ -14,8 +16,6 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyApplication extends State<MyStatefulWidget> {
-  StripeHandler stripeHandler = StripeHandler();
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +52,24 @@ class _MyApplication extends State<MyStatefulWidget> {
 
         // touchable ~container
         child: ListView(
-          children: [
-            stripeHandler,
+          children:  [
+            StripeController(name: "Tisch", buttonGroup: ButtonGroup.RGB, pins: [
+              Pin(0, PinType.raspberry),
+              Pin(1, PinType.raspberry),
+              Pin(2, PinType.raspberry),
+            ]),
+            StripeController(name: "Fenster", buttonGroup: ButtonGroup.RGB, pins: [
+              Pin(3, PinType.raspberry),
+              Pin(4, PinType.raspberry),
+              Pin(5, PinType.raspberry),
+            ]),
+            StripeController(name: "Schrank", buttonGroup: ButtonGroup.RGB, pins: [
+              Pin(6, PinType.raspberry),
+              Pin(7, PinType.raspberry),
+              Pin(8, PinType.raspberry),
+            ]),
+            //MasterController(),
+            ColorButton(color:Colors.green,name: "name", pin:Pin(33, PinType.arduinoMega)),
           ],
         ), /*new InkWell(
           // tap action

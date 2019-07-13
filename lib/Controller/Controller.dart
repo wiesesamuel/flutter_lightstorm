@@ -7,17 +7,24 @@ class StateController {
   ModeType currentModeType = ModeType.OnOff;
   List<bool> masterStates = List(ModeType.values.length);
 
+  StateController() {
+    masterStates.forEach((masterStates) {
+      masterStates = true;
+    });
+  }
+
   void flipMasterState(ModeType mode) {
     masterStates[mode.index] = !masterStates[mode.index];
   }
 
   void update(Pin pin) {
     ModeType modeInUse;
+    /*
     for (int i = 0; i < ModeType.values.length; i++) {
       if (masterStates[i] && pin.states[i])
         modeInUse = ModeType.values[i];
     }
-    sendPinState(pin, modeInUse);
+    sendPinState(pin, modeInUse);*/
     //TODO: raspberry communication
   }
 
