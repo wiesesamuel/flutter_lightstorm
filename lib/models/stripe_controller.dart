@@ -7,9 +7,6 @@ import 'buttonGenerator.dart';
 import 'color_button.dart';
 
 class StripeController extends StatefulWidget {
-  // converter
-  static final ButtonGroupConverter _buttonGroupConverter =
-      ButtonGroupConverter();
 
   // settings
   final ButtonGroup buttonGroup;
@@ -30,7 +27,7 @@ class StripeController extends StatefulWidget {
 
   @override
   _StripeControllerState createState() => _StripeControllerState(name,
-      _buttonGroupConverter.getButtons(buttonGroup, pins), reactiveController);
+      buttonGroupConverter.getButtons(buttonGroup, pins), reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
 /*
@@ -74,27 +71,7 @@ class _StripeControllerState extends State<StripeController> {
   }
 
   Widget build(BuildContext context) {
-    List<Widget> children = [
-      /*
-      ButtonTheme(
-          minWidth: 10,
-          height: 20,
-          buttonColor: controllerColor,
-          child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  controllerState = !controllerState;
-                  updateDepiction();
-                  buttons.forEach((b) {
-                    b.toggleStatus();
-                    print(b.isPressed);
-                  });
-                });
-              },
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Text("Test")))
-              */
-    ];
+    List<Widget> children = [];
     children.addAll(buttons);
     return Container(
       child: ListTile(

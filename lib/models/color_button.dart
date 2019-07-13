@@ -76,8 +76,6 @@ class _ColorButtonApp extends State<ColorButton> {
           onPressed: () {
             setState(() {
               pressed[getCurrentModeIndex()] = !pressed[getCurrentModeIndex()];
-              print("touched " + pressed[getCurrentModeIndex()].toString());
-              print("disabled " + disabled[getCurrentModeIndex()].toString());
               pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
             });
           },

@@ -25,7 +25,6 @@ class Pin {
   }
 
   void setState(bool state) {
-    print("Im set to " + state.toString());
     states[getCurrentModeIndex()] = state;
     update();
   }
