@@ -1,16 +1,15 @@
-import 'package:lsd/pin/pin.dart';
+import 'package:lsd/helper/helper.dart';
 import 'package:lsd/pin/mode_type.dart';
+import 'package:lsd/pin/pin.dart';
 
 
-class StateController {
+class PinController {
   
   ModeType currentModeType = ModeType.OnOff;
   List<bool> masterStates = List(ModeType.values.length);
 
-  StateController() {
-    masterStates.forEach((masterStates) {
-      masterStates = true;
-    });
+  PinController() {
+    setBooleansOnList(masterStates, true);
   }
 
   void flipMasterState(ModeType mode) {
@@ -19,12 +18,11 @@ class StateController {
 
   void update(Pin pin) {
     ModeType modeInUse;
-    /*
     for (int i = 0; i < ModeType.values.length; i++) {
       if (masterStates[i] && pin.states[i])
         modeInUse = ModeType.values[i];
     }
-    sendPinState(pin, modeInUse);*/
+    sendPinState(pin, modeInUse);
     //TODO: raspberry communication
   }
 

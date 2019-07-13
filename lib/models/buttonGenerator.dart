@@ -31,7 +31,7 @@ class ButtonSingleConverter {
       case ButtonSingle.B:
         return ColorButton(name: "Blue", color: Color.fromRGBO(0, 0, 255, 1.0), pin: pin,);
       case ButtonSingle.W:
-        return ColorButton(name: "White", color: Colors.white70, pin: pin,);
+        return ColorButton(name: "White", color: Color.fromRGBO(20, 20, 20, 0.7), pin: pin,);
         break;
     }
     return null;
@@ -57,10 +57,10 @@ class ButtonGroupConverter {
         break;
       case ButtonGroup.RGBW:
         return [
+          _buttonSingleConverter.getButton(ButtonSingle.W, pins[3]),
           _buttonSingleConverter.getButton(ButtonSingle.R, pins[0]),
           _buttonSingleConverter.getButton(ButtonSingle.G, pins[1]),
           _buttonSingleConverter.getButton(ButtonSingle.B, pins[2]),
-          _buttonSingleConverter.getButton(ButtonSingle.W, pins[3]),
         ];
         break;
     }

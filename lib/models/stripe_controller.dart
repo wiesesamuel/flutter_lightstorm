@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/helper/helper.dart';
+import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
 import 'buttonGenerator.dart';
@@ -53,7 +55,7 @@ class _StripeControllerState extends State<StripeController> {
   List<ColorButton> buttons;
 
   // state
-  bool controllerState = true;
+  List<bool> pressed = List(ModeType.values.length);
 
   // functions
   final ReactiveController reactiveController;
@@ -63,6 +65,7 @@ class _StripeControllerState extends State<StripeController> {
   Text subtitle = Text("");
 
   _StripeControllerState(this.name, this.buttons, this.reactiveController) {
+    setBooleansOnList(pressed, true);
     reactiveController.updateAllMembers = () {
       buttons.forEach((button) {
         button.update();
@@ -94,21 +97,22 @@ class _StripeControllerState extends State<StripeController> {
     ];
     children.addAll(buttons);
     return Container(
-      //height: 30.0,
       child: ListTile(
+        contentPadding: null,
+        dense: true,
         title: Text(name),
         //subtitle: Text(controllerState ? on : off),
-        trailing: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+        trailing: Container(
+          //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
             child: Row(
               children: children,
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
             )),
-        selected: controllerState,
+        selected: pressed[getCurrentModeIndex()],
         onTap: () {
           setState(() {
-            controllerState = !controllerState;
+            pressed[getCurrentModeIndex()] = !pressed[getCurrentModeIndex()];
             buttons.forEach((b) {
               b.toggleStatus();
             });
@@ -117,6 +121,7 @@ class _StripeControllerState extends State<StripeController> {
       ),
     );
   }
+
 }
 
 // accessible functions holder

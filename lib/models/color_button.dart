@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/Controller/Controller.dart';
+import 'package:lsd/helper/helper.dart';
 import 'package:lsd/models/buttonGenerator.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
@@ -44,8 +44,8 @@ class _ColorButtonApp extends State<ColorButton> {
   final Pin pin;
 
   // states
-  bool pressed = false;
-  bool disabled = false;
+  List<bool> pressed = List(ModeType.values.length);
+  List<bool> disabled = List(ModeType.values.length);
 
   // depiction
   Color mainFrontColor = Colors.grey;
@@ -56,10 +56,12 @@ class _ColorButtonApp extends State<ColorButton> {
   final ReactiveController reactiveController;
 
   _ColorButtonApp(this.mainFrontColor, this.name, this.pin, this.reactiveController) {
+    setBooleansOnList(pressed, false);
+    setBooleansOnList(disabled, false);
     reactiveController.toggleStatus = () {
       setState(() {
-        disabled = !disabled;
-        pin.setState(pressed && disabled);
+        disabled[getCurrentModeIndex()] = !disabled[getCurrentModeIndex()];
+        pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
       });
     };
     disabledFrontColor = mainFrontColor.withOpacity(0.5);
@@ -73,8 +75,10 @@ class _ColorButtonApp extends State<ColorButton> {
         child: RaisedButton(
           onPressed: () {
             setState(() {
-              pressed = !pressed;
-              pin.setState(pressed && disabled);
+              pressed[getCurrentModeIndex()] = !pressed[getCurrentModeIndex()];
+              print("touched " + pressed[getCurrentModeIndex()].toString());
+              print("disabled " + disabled[getCurrentModeIndex()].toString());
+              pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
             });
           },
           padding: EdgeInsets.symmetric(horizontal: 5),
@@ -84,8 +88,8 @@ class _ColorButtonApp extends State<ColorButton> {
   }
 
   Color getFrontColor() {
-    if (pressed) {
-      if (disabled) {
+    if (pressed[getCurrentModeIndex()]) {
+      if (disabled[getCurrentModeIndex()]) {
         return disabledFrontColor;
       }
       return mainFrontColor;
@@ -94,11 +98,12 @@ class _ColorButtonApp extends State<ColorButton> {
   }
 
   Color getTextColor() {
-    if (pressed) {
+    if (pressed[getCurrentModeIndex()]) {
       return buttonTextColorConverter.getTextColor(mainFrontColor);
     }
     return Colors.black;
   }
+
 }
 
 // accessible functions holder

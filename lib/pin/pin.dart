@@ -1,9 +1,10 @@
-import 'package:lsd/Controller/Controller.dart';
+import 'package:lsd/Controller/controller.dart';
+import 'package:lsd/helper/helper.dart';
 import 'package:lsd/pin/pin_type.dart';
+
 import 'mode_type.dart';
 
 class Pin {
-  static final StateController _stateController = StateController();
   static const int _MAX_FREQUENCY = 300;
   static const int _MAX_BRIGHTNESS = 100;
 
@@ -12,33 +13,31 @@ class Pin {
   final PinType pinTyp;
 
   // state
-
   int frequency;
   int brightness;
   List<bool> states = List(ModeType.values.length);
   List<int> group;
 
   Pin(this.pinNr, this.pinTyp) {
-    states.forEach((state) {
-      state = true;
-    });
+    setBooleansOnList(states, false);
     frequency = 200;
     brightness = 100;
   }
 
   void setState(bool state) {
-    states[_stateController.currentModeType.index] = state;
+    print("Im set to " + state.toString());
+    states[getCurrentModeIndex()] = state;
     update();
   }
 
   void flipState() {
-    states[_stateController.currentModeType.index] =
-        !states[_stateController.currentModeType.index];
+    states[getCurrentModeIndex()] =
+        !states[getCurrentModeIndex()];
     update();
   }
 
   void update() {
-    _stateController.update(this);
+    pinController.update(this);
   }
 
   int getFrequency() => frequency;

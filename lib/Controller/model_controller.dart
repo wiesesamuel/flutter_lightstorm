@@ -1,26 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:lsd/models/buttonGenerator.dart';
 import 'package:lsd/models/stripe_controller.dart';
-import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 import 'package:lsd/pin/pin_type.dart';
 
-import 'buttonGenerator.dart';
-
-class MasterController extends StatefulWidget {
-  final ReactiveController reactiveController;
-
-  MasterController({Key key}) :
-        reactiveController = ReactiveController(),
-        super(key: key);
-
-  @override
-  _MasterControllerState createState() =>
-      _MasterControllerState(reactiveController);
-
-  void updateAllMembers() => reactiveController.updateAllMembers();
-}
-
-class _MasterControllerState extends State<MasterController> {
+class ModelController {
   // children
   List<StripeController> stripes = [
     StripeController(name: "Tisch", buttonGroup: ButtonGroup.RGB, pins: [
@@ -79,23 +62,14 @@ class _MasterControllerState extends State<MasterController> {
     ]),
   ];
 
-  // functions
-  final ReactiveController reactiveController;
-
-  _MasterControllerState(this.reactiveController) {
-    reactiveController.updateAllMembers = () {
-      stripes.forEach((stripe) {
-        stripe.updateAllMembers();
-      });
-    };
+  void updateAllMembers() {
+    stripes.forEach((stripe) {
+      stripe.updateAllMembers();
+    });
   }
 
-  Widget build(BuildContext context) {
+  List<StripeController> getAllMembers() {
     return stripes;
   }
-}
 
-// accessible functions holder
-class ReactiveController {
-  Function updateAllMembers;
 }
