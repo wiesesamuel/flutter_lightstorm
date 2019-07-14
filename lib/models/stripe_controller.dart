@@ -3,7 +3,7 @@ import 'package:lsd/helper/helper.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
-import 'buttonGenerator.dart';
+import 'button_generator.dart';
 import 'color_button.dart';
 
 class StripeController extends StatefulWidget {

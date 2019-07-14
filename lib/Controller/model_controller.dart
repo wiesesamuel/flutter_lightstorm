@@ -1,4 +1,4 @@
-import 'package:lsd/models/buttonGenerator.dart';
+import 'package:lsd/models/button_generator.dart';
 import 'package:lsd/models/stripe_controller.dart';
 import 'package:lsd/pin/pin.dart';
 import 'package:lsd/pin/pin_type.dart';

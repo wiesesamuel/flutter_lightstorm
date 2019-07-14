@@ -12,6 +12,7 @@ class ButtonTextColorConverter {
     switch (color.value) {
       // dark blue
       case (4278190335):
+      case (2989634098):
         return Colors.white;
     }
     return Colors.black;
@@ -44,7 +45,7 @@ class ButtonSingleConverter {
       case ButtonSingle.W:
         return ColorButton(
           name: "White",
-          color: Color.fromRGBO(20, 20, 20, 0.7),
+          color: Color.fromRGBO(50, 50, 50, 0.7),
           pin: pin,
         );
         break;

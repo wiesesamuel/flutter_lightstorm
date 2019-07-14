@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lsd/helper/helper.dart';
-import 'package:lsd/models/buttonGenerator.dart';
+import 'package:lsd/models/button_generator.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
