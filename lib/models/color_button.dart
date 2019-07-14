@@ -21,8 +21,8 @@ class ColorButton extends StatefulWidget {
   }
 
   void toggleStatus() => reactiveController.toggleStatus();
-  void flipState() => pin.flipState();
-  void update() => pin.update();
+  void flipState() => reactiveController.flipState();
+  void update() => reactiveController.update();
 
   /*
   Map<String, dynamic> getJson() =>
@@ -64,6 +64,17 @@ class _ColorButtonApp extends State<ColorButton> {
         pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
       });
     };
+    reactiveController.flipState = () {
+      setState(() {
+        pressed[getCurrentModeIndex()] = !pressed[getCurrentModeIndex()];
+        pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+      });
+    };
+    reactiveController.update = () {
+      setState(() {
+        pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+      });
+    };
     disabledFrontColor = mainFrontColor.withOpacity(0.5);
   }
 
@@ -75,8 +86,7 @@ class _ColorButtonApp extends State<ColorButton> {
         child: RaisedButton(
           onPressed: () {
             setState(() {
-              pressed[getCurrentModeIndex()] = !pressed[getCurrentModeIndex()];
-              pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+              reactiveController.flipState();
             });
           },
           padding: EdgeInsets.symmetric(horizontal: 5),
@@ -107,4 +117,6 @@ class _ColorButtonApp extends State<ColorButton> {
 // accessible functions holder
 class ReactiveController {
   Function toggleStatus;
+  Function update;
+  Function flipState;
 }

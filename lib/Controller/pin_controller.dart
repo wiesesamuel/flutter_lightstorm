@@ -38,5 +38,6 @@ class PinController {
 
   void setCurrentModeType(ModeType modeType) {
     currentModeType = modeType;
+    //modelController.updateAllMembers();
   }
 }

@@ -27,6 +27,7 @@ class _ControllerViewState extends State<ControllerView>
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, length: tabs.length);
+    _tabController.addListener(_updateCurrentMode);
   }
 
   @override
@@ -45,7 +46,6 @@ class _ControllerViewState extends State<ControllerView>
               tabs: tabs,
               controller: _tabController,
               labelColor: Colors.black,
-              //onTap: pinController.setCurrentModeType(ModeType.values[_tabController.index]);
             ),
             // components
             body: Center(
@@ -54,5 +54,9 @@ class _ControllerViewState extends State<ControllerView>
               ),
             ),
         ));
+  }
+
+  void _updateCurrentMode() {
+    pinController.setCurrentModeType(ModeType.values[_tabController.index]);
   }
 }
