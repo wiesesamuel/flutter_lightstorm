@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lsd/helper/helper.dart';
-import 'package:lsd/models/button_generator.dart';
+import 'package:lsd/models/app_theme.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
@@ -51,13 +51,14 @@ class _ColorButtonApp extends State<ColorButton> {
   // depiction
   Color mainFrontColor = Colors.grey;
   Color disabledFrontColor = Colors.black;
+  Color inUseFrontColor = Colors.black;
   final String name;
 
   // functions
   final ReactiveController reactiveController;
 
   _ColorButtonApp(this.mainFrontColor, this.name, this.pin, this.reactiveController) {
-    setBooleansOnList(pressed, false);
+    unifyLists(pressed, pin.states);
     setBooleansOnList(disabled, false);
     reactiveController.toggleStatus = () {
       setState(() {
@@ -80,7 +81,8 @@ class _ColorButtonApp extends State<ColorButton> {
       setState(() {
       });
     };
-    disabledFrontColor = mainFrontColor.withOpacity(0.5);
+    disabledFrontColor = mainFrontColor.withOpacity(0.7);
+    inUseFrontColor = mainFrontColor.withOpacity(0.2);
   }
 
   Widget build(BuildContext context) {
@@ -102,19 +104,21 @@ class _ColorButtonApp extends State<ColorButton> {
 
   Color getFrontColor() {
     if (pressed[getCurrentModeIndex()]) {
+      if (getCurrentHighestPrioritizedModeInUse(pin) > getCurrentModeIndex())
+        return inUseFrontColor;
       if (disabled[getCurrentModeIndex()]) {
         return disabledFrontColor;
       }
       return mainFrontColor;
     }
-    return Colors.white;
+    return getDefaultButtonFrontColor();
   }
 
   Color getTextColor() {
     if (pressed[getCurrentModeIndex()]) {
-      return buttonTextColorConverter.getTextColor(mainFrontColor);
+      return getButtonTextColor(mainFrontColor);
     }
-    return Colors.black;
+    return getDefaultButtonTextColor();
   }
 
 }

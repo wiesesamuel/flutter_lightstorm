@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/view/main_view.dart';
+import 'package:lsd/view/views.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,6 +8,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainView();
+    return mainView;
   }
 }

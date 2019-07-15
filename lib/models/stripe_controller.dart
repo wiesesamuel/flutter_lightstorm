@@ -73,6 +73,9 @@ class _StripeControllerState extends State<StripeController> {
       buttons.forEach((button) {
         button.updateUI();
       });
+      setState(() {
+
+      });
     };
   }
 

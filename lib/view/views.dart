@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lsd/view/controller_view.dart';
+import 'package:lsd/view/main_view.dart';
 import 'package:lsd/view/settings.dart';
 
+final MainView mainView = MainView();
 final ControllerView _controllerView = ControllerView();
 final SettingsView _settingsView = SettingsView();
 

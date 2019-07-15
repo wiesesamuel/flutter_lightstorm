@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/controller/controller.dart';
+import 'package:lsd/models/app_theme.dart';
 import 'package:lsd/view/views.dart';
 
-enum AppTheme { Light, Dark }
-
-final appThemes = {
-  AppTheme.Light: ThemeData(
-    brightness: Brightness.light,
-    primarySwatch: Colors.indigo,
-  ),
-  AppTheme.Dark: ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.blue,
-  )
-};
-
-AppTheme currentTheme = AppTheme.Dark;
 
 class MainView extends StatefulWidget {
-  _MainViewState createState() => _MainViewState();
+  final ReactiveController reactiveController = ReactiveController();
+
+  _MainViewState createState() => _MainViewState(reactiveController);
+
+  void updateUI() => reactiveController.updateUI();
 }
 
 class _MainViewState extends State<MainView> {
+  final ReactiveController reactiveController;
+
+  _MainViewState(this.reactiveController) {
+    reactiveController.updateUI = () {
+      setState(() {
+modelController.updateUI();
+      });
+    };
+  }
+
   static Views _currentView = defaultView;
   static Widget _viewWidget = getView(_currentView);
 
@@ -77,4 +79,9 @@ class _MainViewState extends State<MainView> {
     _currentView = view;
     _viewWidget = getView(_currentView);
   }
+}
+
+// accessible functions holder
+class ReactiveController {
+  Function updateUI;
 }

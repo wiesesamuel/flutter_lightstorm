@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lsd/controller/controller.dart';
+import 'package:lsd/models/app_theme.dart';
 import 'package:lsd/pin/mode_type.dart';
 
 class ControllerView extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ControllerViewState extends State<ControllerView>
               isScrollable: true,
               tabs: tabs,
               controller: _tabController,
-              labelColor: Colors.black,
+              labelColor: getDefaultIconColor(),
             ),
             // components
             body: Center(

@@ -2,9 +2,7 @@ import 'package:lsd/helper/helper.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
-
 class PinController {
-  
   ModeType currentModeType = ModeType.OnOff;
   List<bool> masterStates = List(ModeType.values.length);
 
@@ -16,24 +14,28 @@ class PinController {
     masterStates[mode.index] = !masterStates[mode.index];
   }
 
-  void update(Pin pin) {
+  ModeType getHighestPrioritizedModeInUse(Pin pin) {
     ModeType modeInUse;
     for (int i = 0; i < ModeType.values.length; i++) {
-      if (masterStates[i] && pin.states[i])
-        modeInUse = ModeType.values[i];
+      if (masterStates[i] && pin.states[i]) modeInUse = ModeType.values[i];
     }
-    sendPinState(pin, modeInUse);
+    return modeInUse;
+  }
+
+  void update(Pin pin) {
+    sendPinState(pin, getHighestPrioritizedModeInUse(pin));
     //TODO: raspberry communication
   }
 
   void sendPinState(Pin pin, ModeType mode) {
-    if ( mode == null) {
+    if (mode == null) {
       //TODO shut pin down
       print(pin.pinNr.toString() + " is OFF");
-    }
-    else {
+    } else {
       // TODO set pin to mode
-      print(pin.pinNr.toString() + " is ON in mode: " + modeTypeHelper.getName(mode));
+      print(pin.pinNr.toString() +
+          " is ON in mode: " +
+          modeTypeHelper.getName(mode));
     }
   }
 

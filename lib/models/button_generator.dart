@@ -3,21 +3,8 @@ import 'package:lsd/pin/pin.dart';
 
 import 'color_button.dart';
 
-final ButtonTextColorConverter buttonTextColorConverter = ButtonTextColorConverter();
 final ButtonGroupConverter buttonGroupConverter = ButtonGroupConverter();
 final ButtonSingleConverter _buttonSingleConverter = ButtonSingleConverter();
-
-class ButtonTextColorConverter {
-  Color getTextColor(Color color) {
-    switch (color.value) {
-      // dark blue
-      case (4278190335):
-      case (2989634098):
-        return Colors.white;
-    }
-    return Colors.black;
-  }
-}
 
 enum ButtonSingle { R, G, B, W }
 
@@ -45,7 +32,7 @@ class ButtonSingleConverter {
       case ButtonSingle.W:
         return ColorButton(
           name: "White",
-          color: Color.fromRGBO(50, 50, 50, 0.7),
+          color: Color.fromRGBO(100, 100, 100, 1),
           pin: pin,
         );
         break;
@@ -58,7 +45,7 @@ enum ButtonGroup { RGB, RGBW }
 
 class ButtonGroupConverter {
   List<ColorButton> getButtons(ButtonGroup buttonGroup, List<Pin> pins) {
-    checkSize(buttonGroup, pins);
+    _checkSize(buttonGroup, pins);
     switch (buttonGroup) {
       case ButtonGroup.RGB:
         return [
@@ -79,18 +66,18 @@ class ButtonGroupConverter {
     return null;
   }
 
-  void checkSize(ButtonGroup buttonGroup, List<Pin> pins) {
+  void _checkSize(ButtonGroup buttonGroup, List<Pin> pins) {
     switch (buttonGroup) {
       case ButtonGroup.RGB:
-        if (pins.length != 3) throwWrongSizeException();
+        if (pins.length != 3) _throwWrongSizeException();
         break;
       case ButtonGroup.RGBW:
-        if (pins.length != 4) throwWrongSizeException();
+        if (pins.length != 4) _throwWrongSizeException();
         break;
     }
   }
 
-  void throwWrongSizeException() {
+  void _throwWrongSizeException() {
     throw FormatException(
         "Pin members doesnt match number of members from buttongroup!");
   }

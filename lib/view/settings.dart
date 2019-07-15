@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/models/app_theme.dart';
 import 'package:lsd/view/about.dart';
-import 'package:lsd/view/main_view.dart';
+import 'package:lsd/view/views.dart';
 
 class Settings {
   static bool darkMode = true;
@@ -26,6 +27,9 @@ class _SettingsViewState extends State<SettingsView> {
                 currentTheme =
                     Settings.darkMode ? AppTheme.Dark : AppTheme.Light;
               });
+              mainView.updateUI();
+              // TODO only let himself be update 1 time, pin states are lost
+
             },
           ),
 
