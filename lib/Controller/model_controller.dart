@@ -68,6 +68,12 @@ class ModelController {
     });
   }
 
+  void updateUI() {
+    stripes.forEach((stripe) {
+      stripe.updateUI();
+    });
+  }
+
   List<StripeController> getAllMembers() {
     return stripes;
   }

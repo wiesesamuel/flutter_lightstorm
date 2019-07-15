@@ -58,5 +58,6 @@ class _ControllerViewState extends State<ControllerView>
 
   void _updateCurrentMode() {
     pinController.setCurrentModeType(ModeType.values[_tabController.index]);
+    modelController.updateUI();
   }
 }

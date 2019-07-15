@@ -23,6 +23,7 @@ class ColorButton extends StatefulWidget {
   void toggleStatus() => reactiveController.toggleStatus();
   void flipState() => reactiveController.flipState();
   void update() => reactiveController.update();
+  void updateUI() => reactiveController.updateUI();
 
   /*
   Map<String, dynamic> getJson() =>
@@ -75,6 +76,10 @@ class _ColorButtonApp extends State<ColorButton> {
         pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
       });
     };
+    reactiveController.updateUI = () {
+      setState(() {
+      });
+    };
     disabledFrontColor = mainFrontColor.withOpacity(0.5);
   }
 
@@ -118,5 +123,6 @@ class _ColorButtonApp extends State<ColorButton> {
 class ReactiveController {
   Function toggleStatus;
   Function update;
+  Function updateUI;
   Function flipState;
 }

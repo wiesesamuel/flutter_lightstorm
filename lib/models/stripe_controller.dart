@@ -30,6 +30,7 @@ class StripeController extends StatefulWidget {
       buttonGroupConverter.getButtons(buttonGroup, pins), reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
+  void updateUI() => reactiveController.updateUI();
 /*
   Map<String, dynamic> getJson() => {
         'name': name,
@@ -68,6 +69,11 @@ class _StripeControllerState extends State<StripeController> {
         button.update();
       });
     };
+    reactiveController.updateUI = () {
+      buttons.forEach((button) {
+        button.updateUI();
+      });
+    };
   }
 
   Widget build(BuildContext context) {
@@ -104,4 +110,5 @@ class _StripeControllerState extends State<StripeController> {
 // accessible functions holder
 class ReactiveController {
   Function updateAllMembers;
+  Function updateUI;
 }

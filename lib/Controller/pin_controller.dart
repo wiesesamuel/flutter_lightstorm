@@ -29,10 +29,11 @@ class PinController {
   void sendPinState(Pin pin, ModeType mode) {
     if ( mode == null) {
       //TODO shut pin down
+      print(pin.pinNr.toString() + " is OFF");
     }
     else {
       // TODO set pin to mode
-      print(pin.pinNr.toString() + " is set to " + mode.index.toString());
+      print(pin.pinNr.toString() + " is ON in mode: " + modeTypeHelper.getName(mode));
     }
   }
 
