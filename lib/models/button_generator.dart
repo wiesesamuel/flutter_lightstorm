@@ -1,77 +1,133 @@
 import 'package:flutter/material.dart';
+import 'package:lsd/models/group_button.dart';
 import 'package:lsd/pin/pin.dart';
 
-import 'color_button.dart';
+import 'pin_button.dart';
 
-final ButtonGroupConverter buttonGroupConverter = ButtonGroupConverter();
-final ButtonSingleConverter _buttonSingleConverter = ButtonSingleConverter();
+final PinButtonGroupConverter buttonGroupConverter = PinButtonGroupConverter();
+final PinButtonSingleConverter _buttonSingleConverter =
+    PinButtonSingleConverter();
 
-enum ButtonSingle { R, G, B, W }
+final Color _blue = Color.fromRGBO(0, 0, 255, 1.0);
+final Color _white = Color.fromRGBO(100, 100, 100, 1);
 
-class ButtonSingleConverter {
-  ColorButton getButton(ButtonSingle buttonSingle, Pin pin) {
-    switch (buttonSingle) {
-      case ButtonSingle.R:
-        return ColorButton(
+enum PinGroup { R, G, B, W }
+
+PinGroup _getPinGroup(PinButtonSingle buttonType) {
+  switch (buttonType) {
+    case PinButtonSingle.R:
+      return PinGroup.R;
+    case PinButtonSingle.G:
+      return PinGroup.G;
+    case PinButtonSingle.B:
+      return PinGroup.B;
+    case PinButtonSingle.W:
+      return PinGroup.W;
+  }
+}
+
+GroupButton getGroupButtonSingle(PinGroup pinGroup) {
+  switch (pinGroup) {
+    case PinGroup.R:
+      return GroupButton(
+        name: "Red",
+        color: Colors.red,
+        pinGroup: pinGroup,
+      );
+    case PinGroup.G:
+      return GroupButton(
+        name: "Green",
+        color: Colors.green,
+        pinGroup: pinGroup,
+      );
+    case PinGroup.B:
+      return GroupButton(
+        name: "Blue",
+        color: _blue,
+        pinGroup: pinGroup,
+      );
+    case PinGroup.W:
+      return GroupButton(
+        name: "White",
+        color: _white,
+        pinGroup: pinGroup,
+      );
+  }
+}
+
+List<GroupButton> getGroupButtonGroup(List<PinGroup> pinGroup) {
+  List<GroupButton> buttons = [];
+  pinGroup.forEach((group) {
+    buttons.add(getGroupButtonSingle(group));
+  });
+  return buttons;
+}
+
+enum PinButtonSingle { R, G, B, W }
+
+class PinButtonSingleConverter {
+  PinButton getPinButton(PinButtonSingle pinButtonSingle, Pin pin) {
+    pin.addGroup(_getPinGroup(pinButtonSingle));
+    switch (pinButtonSingle) {
+      case PinButtonSingle.R:
+        return PinButton(
           name: "Red",
           color: Colors.red,
           pin: pin,
         );
-      case ButtonSingle.G:
-        return ColorButton(
+      case PinButtonSingle.G:
+        return PinButton(
           name: "Green",
           color: Colors.green,
           pin: pin,
         );
-      case ButtonSingle.B:
-        return ColorButton(
+      case PinButtonSingle.B:
+        return PinButton(
           name: "Blue",
-          color: Color.fromRGBO(0, 0, 255, 1.0),
+          color: _blue,
           pin: pin,
         );
-      case ButtonSingle.W:
-        return ColorButton(
+      case PinButtonSingle.W:
+        return PinButton(
           name: "White",
-          color: Color.fromRGBO(100, 100, 100, 1),
+          color: _white,
           pin: pin,
         );
         break;
     }
-    return null;
   }
 }
 
-enum ButtonGroup { RGB, RGBW }
+enum PinButtonGroup { RGB, RGBW }
 
-class ButtonGroupConverter {
-  List<ColorButton> getButtons(ButtonGroup buttonGroup, List<Pin> pins) {
+class PinButtonGroupConverter {
+  List<PinButton> getButtons(PinButtonGroup buttonGroup, List<Pin> pins) {
     _checkSize(buttonGroup, pins);
     switch (buttonGroup) {
-      case ButtonGroup.RGB:
+      case PinButtonGroup.RGB:
         return [
-          _buttonSingleConverter.getButton(ButtonSingle.R, pins[0]),
-          _buttonSingleConverter.getButton(ButtonSingle.G, pins[1]),
-          _buttonSingleConverter.getButton(ButtonSingle.B, pins[2]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.R, pins[0]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.G, pins[1]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.B, pins[2]),
         ];
         break;
-      case ButtonGroup.RGBW:
+      case PinButtonGroup.RGBW:
         return [
-          _buttonSingleConverter.getButton(ButtonSingle.W, pins[3]),
-          _buttonSingleConverter.getButton(ButtonSingle.R, pins[0]),
-          _buttonSingleConverter.getButton(ButtonSingle.G, pins[1]),
-          _buttonSingleConverter.getButton(ButtonSingle.B, pins[2]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.W, pins[3]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.R, pins[0]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.G, pins[1]),
+          _buttonSingleConverter.getPinButton(PinButtonSingle.B, pins[2]),
         ];
         break;
     }
-    return null;
   }
 
-  void _checkSize(ButtonGroup buttonGroup, List<Pin> pins) {
+  void _checkSize(PinButtonGroup buttonGroup, List<Pin> pins) {
     switch (buttonGroup) {
-      case ButtonGroup.RGB:
+      case PinButtonGroup.RGB:
         if (pins.length != 3) _throwWrongSizeException();
         break;
-      case ButtonGroup.RGBW:
+      case PinButtonGroup.RGBW:
         if (pins.length != 4) _throwWrongSizeException();
         break;
     }

@@ -1,5 +1,6 @@
 import 'package:lsd/controller/controller.dart';
 import 'package:lsd/helper/helper.dart';
+import 'package:lsd/models/button_generator.dart';
 import 'package:lsd/pin/pin_type.dart';
 
 import 'mode_type.dart';
@@ -16,7 +17,7 @@ class Pin {
   int frequency;
   int brightness;
   List<bool> states = List(ModeType.values.length);
-  List<int> group;
+  List<PinGroup> group = [];
 
   Pin(this.pinNr, this.pinTyp) {
     setBooleansOnList(states, false);
@@ -57,15 +58,15 @@ class Pin {
       this.brightness = brightness;
   }
 
-  void addGroup(int group) {
+  void addGroup(PinGroup group) {
     if (!this.group.contains(group)) this.group.add(group);
   }
 
-  void rmGroup(int group) {
+  void rmGroup(PinGroup group) {
     if (this.group.contains(group)) this.group.remove(group);
   }
 
-  bool isGroup(int group) => this.group.contains(group);
+  bool isGroup(PinGroup group) => this.group.contains(group);
 
   Pin.fromJson(Map<String, dynamic> json)
       : pinNr = json['pinNr'],

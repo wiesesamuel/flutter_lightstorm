@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lsd/helper/helper.dart';
 import 'package:lsd/models/app_theme.dart';
+import 'package:lsd/models/button_generator.dart';
 import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
-class ColorButton extends StatefulWidget {
-
+class PinButton extends StatefulWidget {
   final Color color;
   final String name;
   final Pin pin;
   final ReactiveController reactiveController;
 
-  ColorButton({Key key, this.color, @required this.name, @required this.pin})
+  PinButton({Key key, this.color, @required this.name, @required this.pin})
       : reactiveController = ReactiveController(),
         super(key: key);
 
@@ -21,11 +21,22 @@ class ColorButton extends StatefulWidget {
   }
 
   void toggleStatus() => reactiveController.toggleStatus();
+
   void flipState() => reactiveController.flipState();
+
+  void setState(bool state) => reactiveController.setState(state);
+
   void update() => reactiveController.update();
+
   void updateUI() => reactiveController.updateUI();
 
-  /*
+  bool getGroupMemberState(PinGroup pinGroup) =>
+      reactiveController.getGroupMemberState(pinGroup);
+
+  void setGroupMemberState(PinGroup pinGroup, bool state) =>
+      reactiveController.setGroupMemberState(pinGroup, state);
+
+/*
   Map<String, dynamic> getJson() =>
       {
         'name': name,
@@ -41,7 +52,7 @@ class ColorButton extends StatefulWidget {
 */
 }
 
-class _ColorButtonApp extends State<ColorButton> {
+class _ColorButtonApp extends State<PinButton> {
   final Pin pin;
 
   // states
@@ -57,29 +68,46 @@ class _ColorButtonApp extends State<ColorButton> {
   // functions
   final ReactiveController reactiveController;
 
-  _ColorButtonApp(this.mainFrontColor, this.name, this.pin, this.reactiveController) {
+  _ColorButtonApp(
+      this.mainFrontColor, this.name, this.pin, this.reactiveController) {
     unifyLists(pressed, pin.states);
     setBooleansOnList(disabled, false);
     reactiveController.toggleStatus = () {
       setState(() {
         disabled[getCurrentModeIndex()] = !disabled[getCurrentModeIndex()];
-        pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+        pin.setState(
+            pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
       });
     };
     reactiveController.flipState = () {
       setState(() {
         pressed[getCurrentModeIndex()] = !pressed[getCurrentModeIndex()];
-        pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+        pin.setState(
+            pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+      });
+    };
+    reactiveController.setState = (bool state) {
+      setState(() {
+        pressed[getCurrentModeIndex()] = state;
+        pin.setState(
+            pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
       });
     };
     reactiveController.update = () {
       setState(() {
-        pin.setState(pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+        pin.setState(
+            pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
       });
     };
     reactiveController.updateUI = () {
-      setState(() {
-      });
+      setState(() {});
+    };
+    reactiveController.getGroupMemberState = (PinGroup pinGroup) {
+      if (!pin.isGroup(pinGroup)) return null;
+      return pin.states[getCurrentModeIndex()];
+    };
+    reactiveController.setGroupMemberState = (PinGroup pinGroup, bool state) {
+      if (pin.isGroup(pinGroup)) reactiveController.setState(state);
     };
     disabledFrontColor = mainFrontColor.withOpacity(0.7);
     inUseFrontColor = mainFrontColor.withOpacity(0.2);
@@ -120,7 +148,6 @@ class _ColorButtonApp extends State<ColorButton> {
     }
     return getDefaultButtonTextColor();
   }
-
 }
 
 // accessible functions holder
@@ -129,4 +156,7 @@ class ReactiveController {
   Function update;
   Function updateUI;
   Function flipState;
+  Function setState;
+  Function getGroupMemberState;
+  Function setGroupMemberState;
 }

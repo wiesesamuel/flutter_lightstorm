@@ -4,12 +4,11 @@ import 'package:lsd/pin/mode_type.dart';
 import 'package:lsd/pin/pin.dart';
 
 import 'button_generator.dart';
-import 'color_button.dart';
+import 'pin_button.dart';
 
 class StripeController extends StatefulWidget {
-
   // settings
-  final ButtonGroup buttonGroup;
+  final PinButtonGroup pinButtonGroup;
   final String name;
   final List<Pin> pins;
   final ReactiveController reactiveController;
@@ -17,20 +16,29 @@ class StripeController extends StatefulWidget {
   StripeController(
       {Key key,
       String name,
-      @required ButtonGroup buttonGroup,
+      @required PinButtonGroup pinButtonGroup,
       @required List<Pin> pins})
       : this.name = name,
-        this.buttonGroup = buttonGroup,
+        this.pinButtonGroup = pinButtonGroup,
         this.pins = pins,
         reactiveController = ReactiveController(),
         super(key: key);
 
   @override
-  _StripeControllerState createState() => _StripeControllerState(name,
-      buttonGroupConverter.getButtons(buttonGroup, pins), reactiveController);
+  _StripeControllerState createState() => _StripeControllerState(
+      name,
+      buttonGroupConverter.getButtons(pinButtonGroup, pins),
+      reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
+
   void updateUI() => reactiveController.updateUI();
+
+  List<bool> getGroupMembersStates(PinGroup pinGroup) =>
+      reactiveController.getGroupMembersStates(pinGroup);
+
+  void setGroupMembersStates(PinGroup pinGroup, bool state) =>
+      reactiveController.setGroupMembersStates(pinGroup, state);
 /*
   Map<String, dynamic> getJson() => {
         'name': name,
@@ -50,7 +58,7 @@ class _StripeControllerState extends State<StripeController> {
   static final String off = "Currently off";
 
   // children
-  List<ColorButton> buttons;
+  List<PinButton> buttons;
 
   // state
   List<bool> pressed = List(ModeType.values.length);
@@ -73,8 +81,19 @@ class _StripeControllerState extends State<StripeController> {
       buttons.forEach((button) {
         button.updateUI();
       });
-      setState(() {
-
+      setState(() {});
+    };
+    reactiveController.getGroupMembersStates = (PinGroup pinGroup) {
+      List<bool> result = [];
+      buttons.forEach((button) {
+        bool state = button.getGroupMemberState(pinGroup);
+        if (state != null) result.add(state);
+      });
+      return result;
+    };
+    reactiveController.setGroupMembersStates = (PinGroup pinGroup, bool state) {
+      buttons.forEach((button) {
+        button.setGroupMemberState(pinGroup, state);
       });
     };
   }
@@ -89,12 +108,12 @@ class _StripeControllerState extends State<StripeController> {
         title: Text(name),
         //subtitle: Text(controllerState ? on : off),
         trailing: Container(
-          //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+            //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
             child: Row(
-              children: children,
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-            )),
+          children: children,
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+        )),
         selected: pressed[getCurrentModeIndex()],
         onTap: () {
           setState(() {
@@ -107,11 +126,12 @@ class _StripeControllerState extends State<StripeController> {
       ),
     );
   }
-
 }
 
 // accessible functions holder
 class ReactiveController {
   Function updateAllMembers;
   Function updateUI;
+  Function getGroupMembersStates;
+  Function setGroupMembersStates;
 }
