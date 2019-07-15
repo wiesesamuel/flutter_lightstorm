@@ -23,14 +23,11 @@ class _GroupControllerState extends State<GroupController> {
     children.addAll(buttons);
     return Container(
       child: ListTile(
-        //contentPadding: null,
         dense: true,
-        //subtitle: Text(controllerState ? on : off),
         trailing: Container(
-            //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
             child: Row(
           children: children,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
         )),
       ),

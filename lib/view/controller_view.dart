@@ -43,7 +43,7 @@ class _ControllerViewState extends State<ControllerView>
         length: titles.length,
         child: Scaffold(
             appBar: TabBar(
-              isScrollable: true,
+              //isScrollable: true,
               tabs: tabs,
               controller: _tabController,
               labelColor: getDefaultIconColor(),

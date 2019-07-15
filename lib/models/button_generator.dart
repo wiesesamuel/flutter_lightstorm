@@ -31,25 +31,25 @@ GroupButton getGroupButtonSingle(PinGroup pinGroup) {
     case PinGroup.R:
       return GroupButton(
         name: "Red",
-        color: Colors.red,
+        color: Colors.red.withOpacity(0.5),
         pinGroup: pinGroup,
       );
     case PinGroup.G:
       return GroupButton(
         name: "Green",
-        color: Colors.green,
+        color: Colors.green.withOpacity(0.5),
         pinGroup: pinGroup,
       );
     case PinGroup.B:
       return GroupButton(
         name: "Blue",
-        color: _blue,
+        color: _blue.withOpacity(0.5),
         pinGroup: pinGroup,
       );
     case PinGroup.W:
       return GroupButton(
         name: "White",
-        color: _white,
+        color: _white.withOpacity(0.5),
         pinGroup: pinGroup,
       );
   }

@@ -3,7 +3,6 @@ import 'package:lsd/controller/controller.dart';
 import 'package:lsd/models/app_theme.dart';
 import 'package:lsd/view/views.dart';
 
-
 class MainView extends StatefulWidget {
   final ReactiveController reactiveController = ReactiveController();
 
@@ -18,7 +17,7 @@ class _MainViewState extends State<MainView> {
   _MainViewState(this.reactiveController) {
     reactiveController.updateUI = () {
       setState(() {
-modelController.updateUI();
+        modelController.updateUI();
       });
     };
   }
