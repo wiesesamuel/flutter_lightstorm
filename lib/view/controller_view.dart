@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/Controller/controller.dart';
+import 'package:lsd/controller/controller.dart';
 import 'package:lsd/pin/mode_type.dart';
 
 class ControllerView extends StatefulWidget {

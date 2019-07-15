@@ -1,4 +1,4 @@
-import 'package:lsd/Controller/controller.dart';
+import 'package:lsd/controller/controller.dart';
 import 'package:lsd/helper/helper.dart';
 import 'package:lsd/pin/pin_type.dart';
 
