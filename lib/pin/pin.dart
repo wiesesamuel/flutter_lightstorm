@@ -1,7 +1,7 @@
-import 'package:lsd/controller/controller.dart';
-import 'package:lsd/helper/helper.dart';
-import 'package:lsd/models/button_generator.dart';
-import 'package:lsd/pin/pin_type.dart';
+import 'package:flutter_led_app/controller/controller.dart';
+import 'package:flutter_led_app/helper/helper.dart';
+import 'package:flutter_led_app/models/button_generator.dart';
+import 'package:flutter_led_app/pin/pin_type.dart';
 
 import 'mode_type.dart';
 

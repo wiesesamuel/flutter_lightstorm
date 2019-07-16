@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/view/controller_view.dart';
-import 'package:lsd/view/main_view.dart';
-import 'package:lsd/view/settings.dart';
+import 'package:flutter_led_app/view/controller_view.dart';
+import 'package:flutter_led_app/view/main_view.dart';
+import 'package:flutter_led_app/view/settings.dart';
 
 final MainView mainView = MainView();
 final ControllerView _controllerView = ControllerView();

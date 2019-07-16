@@ -1,6 +1,6 @@
-import 'package:lsd/helper/helper.dart';
-import 'package:lsd/pin/mode_type.dart';
-import 'package:lsd/pin/pin.dart';
+import 'package:flutter_led_app/helper/helper.dart';
+import 'package:flutter_led_app/pin/mode_type.dart';
+import 'package:flutter_led_app/pin/pin.dart';
 
 class PinController {
   ModeType currentModeType = ModeType.OnOff;

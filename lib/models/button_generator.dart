@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/models/group_button.dart';
-import 'package:lsd/pin/pin.dart';
+import 'package:flutter_led_app/models/group_button.dart';
+import 'package:flutter_led_app/pin/pin.dart';
 
 import 'pin_button.dart';
 

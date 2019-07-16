@@ -1,6 +1,6 @@
-import 'package:lsd/controller/controller.dart';
-import 'package:lsd/pin/mode_type.dart';
-import 'package:lsd/pin/pin.dart';
+import 'package:flutter_led_app/controller/controller.dart';
+import 'package:flutter_led_app/pin/mode_type.dart';
+import 'package:flutter_led_app/pin/pin.dart';
 
 void setBooleansOnList(List<bool> list, bool value) {
   for(int i = 0; i < list.length; i++) {

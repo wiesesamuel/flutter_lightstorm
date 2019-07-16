@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/models/button_generator.dart';
-import 'package:lsd/models/group_controller.dart';
-import 'package:lsd/models/stripe_controller.dart';
-import 'package:lsd/pin/pin.dart';
-import 'package:lsd/pin/pin_type.dart';
+import 'package:flutter_led_app/models/button_generator.dart';
+import 'package:flutter_led_app/models/group_controller.dart';
+import 'package:flutter_led_app/models/stripe_controller.dart';
+import 'package:flutter_led_app/pin/pin.dart';
+import 'package:flutter_led_app/pin/pin_type.dart';
 
 class ModelController {
   // children

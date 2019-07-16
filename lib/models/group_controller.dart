@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/models/button_generator.dart';
-import 'package:lsd/models/group_button.dart';
+import 'package:flutter_led_app/models/button_generator.dart';
+import 'package:flutter_led_app/models/group_button.dart';
 
 class GroupController extends StatefulWidget {
   final List<PinGroup> pinGroups;

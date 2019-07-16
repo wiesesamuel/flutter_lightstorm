@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lsd/helper/helper.dart';
-import 'package:lsd/models/app_theme.dart';
-import 'package:lsd/models/button_generator.dart';
-import 'package:lsd/pin/mode_type.dart';
-import 'package:lsd/pin/pin.dart';
+import 'package:flutter_led_app/helper/helper.dart';
+import 'package:flutter_led_app/models/app_theme.dart';
+import 'package:flutter_led_app/models/button_generator.dart';
+import 'package:flutter_led_app/pin/mode_type.dart';
+import 'package:flutter_led_app/pin/pin.dart';
 
 class PinButton extends StatefulWidget {
   final Color color;
