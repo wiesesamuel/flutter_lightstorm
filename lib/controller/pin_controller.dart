@@ -1,12 +1,11 @@
+import 'package:flutter_led_app/controller/controller.dart';
 import 'package:flutter_led_app/helper/helper_models.dart';
-import 'package:flutter_led_app/network/client.dart';
 import 'package:flutter_led_app/pin/mode_type.dart';
 import 'package:flutter_led_app/pin/pin.dart';
 
 class PinController {
   ModeType currentModeType = ModeType.OnOff;
   List<bool> masterStates = List(ModeType.values.length);
-  Client client = Client();
 
   PinController() {
     setBooleansOnList(masterStates, true);
@@ -30,6 +29,9 @@ class PinController {
   }
 
   void sendPinState(Pin pin, ModeType mode) {
+    networkController.connect();
+    networkController.sendMessage(pin.toJson().toString(), "pin");
+
     //client.sendRequest("Hey there");
     if (mode == null) {
       //TODO shut pin down
