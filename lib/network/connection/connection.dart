@@ -189,6 +189,9 @@ class Connection {
     if (_cipher != null)
       _cipher.crypt(jsonEncoded);
 
+    print("write request");
+    print(jsonEncoded);
+
     // write to socket
     this._socket.add(jsonEncoded);
   }

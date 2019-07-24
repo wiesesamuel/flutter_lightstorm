@@ -44,6 +44,12 @@ class _MainViewState extends State<MainView> {
                   child: new Text('LED'),
                 ),
                 ListTile(
+                    title: new Text("get"),
+                    trailing: Icon(Icons.get_app),
+                    onTap: () => setState(() {
+                      networkController.getStripes();
+                    })),
+                ListTile(
                     title: new Text(getViewName(Views.SIMPLE)),
                     trailing: Icon(Icons.sentiment_satisfied),
                     onTap: () => setState(() {

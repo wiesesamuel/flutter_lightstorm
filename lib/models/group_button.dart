@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_led_app/controller/controller.dart';
 import 'package:flutter_led_app/models/app_theme.dart';
-import 'package:flutter_led_app/models/button_generator.dart';
 
 class GroupButton extends StatefulWidget {
   final Color color;
   final String name;
-  final PinGroup pinGroup;
+  final int pinGroup;
 
   GroupButton({Key key, this.color, this.name, this.pinGroup})
       : super(key: key);
@@ -21,7 +20,7 @@ class _GroupButtonState extends State<GroupButton> {
   // depiction
   final Color color;
   final String name;
-  final PinGroup pinGroup;
+  final int pinGroup;
 
   _GroupButtonState(this.color, this.name, this.pinGroup);
 

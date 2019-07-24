@@ -29,16 +29,15 @@ class PinController {
   }
 
   void sendPinState(Pin pin, ModeType mode) {
-    networkController.connect();
-    networkController.sendMessage(pin.toJson().toString(), "pin");
+    networkController.sendMessage(pin.toJson().toString(), "updatePin");
 
     //client.sendRequest("Hey there");
     if (mode == null) {
       //TODO shut pin down
-      print(pin.pinNr.toString() + " is OFF");
+      print(pin.pin_nr.toString() + " is OFF");
     } else {
       // TODO set pin to mode
-      print(pin.pinNr.toString() +
+      print(pin.pin_nr.toString() +
           " is ON in mode: " +
           modeTypeHelper.getName(mode));
     }

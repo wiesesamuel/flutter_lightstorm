@@ -1,61 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_led_app/helper/helper_models.dart';
+import 'package:flutter_led_app/models/button_gen.dart';
 import 'package:flutter_led_app/pin/mode_type.dart';
-import 'package:flutter_led_app/pin/pin.dart';
-
-import 'button_generator.dart';
+import 'package:flutter_led_app/pin/stripe.dart';
 import 'pin_button.dart';
 
 class StripeController extends StatefulWidget {
   // settings
-  final PinButtonGroup pinButtonGroup;
-  final String name;
-  final List<Pin> pins;
+  final Stripe stripe;
   final ReactiveController reactiveController;
 
-  StripeController(
-      {Key key,
-      String name,
-      @required PinButtonGroup pinButtonGroup,
-      @required List<Pin> pins})
-      : this.name = name,
-        this.pinButtonGroup = pinButtonGroup,
-        this.pins = pins,
+  StripeController({Key key, @required Stripe stripe})
+      : this.stripe = stripe,
         reactiveController = ReactiveController(),
         super(key: key);
 
   @override
   _StripeControllerState createState() => _StripeControllerState(
-      name,
-      buttonGroupConverter.getButtons(pinButtonGroup, pins),
+      stripe.name,
+      getPinButtons(stripe.pins),
       reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
 
   void updateUI() => reactiveController.updateUI();
 
-  List<bool> getGroupMembersStates(PinGroup pinGroup) =>
+  List<bool> getGroupMembersStates(int pinGroup) =>
       reactiveController.getGroupMembersStates(pinGroup);
 
-  void setGroupMembersStates(PinGroup pinGroup, bool state) =>
+  void setGroupMembersStates(int pinGroup, bool state) =>
       reactiveController.setGroupMembersStates(pinGroup, state);
-/*
-  Map<String, dynamic> getJson() => {
-        'name': name,
-        'buttonGroup': buttonGroup,
-      };
 
-  StripeController.fromJson(Map<String, dynamic> json) {
-    pins = List();
-    name = json['name'];
-    buttonGroup = json['buttonGroup'];
-  }
-  */
 }
 
 class _StripeControllerState extends State<StripeController> {
-  static final String on = "Currently on";
-  static final String off = "Currently off";
 
   // children
   List<PinButton> buttons;
@@ -68,7 +46,6 @@ class _StripeControllerState extends State<StripeController> {
 
   // depiction
   String name;
-  Text subtitle = Text("");
 
   _StripeControllerState(this.name, this.buttons, this.reactiveController) {
     setBooleansOnList(pressed, true);
@@ -83,7 +60,7 @@ class _StripeControllerState extends State<StripeController> {
       });
       setState(() {});
     };
-    reactiveController.getGroupMembersStates = (PinGroup pinGroup) {
+    reactiveController.getGroupMembersStates = (int pinGroup) {
       List<bool> result = [];
       buttons.forEach((button) {
         bool state = button.getGroupMemberState(pinGroup);
@@ -91,7 +68,7 @@ class _StripeControllerState extends State<StripeController> {
       });
       return result;
     };
-    reactiveController.setGroupMembersStates = (PinGroup pinGroup, bool state) {
+    reactiveController.setGroupMembersStates = (int pinGroup, bool state) {
       buttons.forEach((button) {
         button.setGroupMemberState(pinGroup, state);
       });
@@ -106,7 +83,6 @@ class _StripeControllerState extends State<StripeController> {
         contentPadding: null,
         dense: true,
         title: Text(name),
-        //subtitle: Text(controllerState ? on : off),
         trailing: Container(
             //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
             child: Row(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_led_app/helper/helper_models.dart';
 import 'package:flutter_led_app/models/app_theme.dart';
-import 'package:flutter_led_app/models/button_generator.dart';
 import 'package:flutter_led_app/pin/mode_type.dart';
 import 'package:flutter_led_app/pin/pin.dart';
 
@@ -11,7 +10,7 @@ class PinButton extends StatefulWidget {
   final Pin pin;
   final ReactiveController reactiveController;
 
-  PinButton({Key key, this.color, @required this.name, @required this.pin})
+  PinButton({Key key, @required this.color, @required this.name, @required this.pin})
       : reactiveController = ReactiveController(),
         super(key: key);
 
@@ -30,26 +29,11 @@ class PinButton extends StatefulWidget {
 
   void updateUI() => reactiveController.updateUI();
 
-  bool getGroupMemberState(PinGroup pinGroup) =>
+  bool getGroupMemberState(int pinGroup) =>
       reactiveController.getGroupMemberState(pinGroup);
 
-  void setGroupMemberState(PinGroup pinGroup, bool state) =>
+  void setGroupMemberState(int pinGroup, bool state) =>
       reactiveController.setGroupMemberState(pinGroup, state);
-
-/*
-  Map<String, dynamic> getJson() =>
-      {
-        'name': name,
-        'color': color,
-        'pin': pin.toJson(),
-      };
-
-  ColorButton.fromJson(Map<String, dynamic> json) {
-    color = json['color'];
-    name = json['name'];
-    pin = Pin.fromJson(json['pin']);
-  }
-*/
 }
 
 class _ColorButtonApp extends State<PinButton> {
@@ -102,11 +86,11 @@ class _ColorButtonApp extends State<PinButton> {
     reactiveController.updateUI = () {
       setState(() {});
     };
-    reactiveController.getGroupMemberState = (PinGroup pinGroup) {
+    reactiveController.getGroupMemberState = (int pinGroup) {
       if (!pin.isGroup(pinGroup)) return null;
       return pin.states[getCurrentModeIndex()];
     };
-    reactiveController.setGroupMemberState = (PinGroup pinGroup, bool state) {
+    reactiveController.setGroupMemberState = (int pinGroup, bool state) {
       if (pin.isGroup(pinGroup)) reactiveController.setState(state);
     };
     disabledFrontColor = mainFrontColor.withOpacity(0.7);

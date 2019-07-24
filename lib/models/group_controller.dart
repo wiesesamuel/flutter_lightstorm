@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_led_app/models/button_generator.dart';
+import 'package:flutter_led_app/models/button_gen.dart';
 import 'package:flutter_led_app/models/group_button.dart';
 
 class GroupController extends StatefulWidget {
