@@ -41,62 +41,69 @@ class Connection {
       // remember socket
       this._socket = socket;
 
-      // listen to data
-      socket.listen((data) {
-        print(data);
-
-        // cipher
-        if (_cipher != null)
-          _cipher.crypt(data);
-
-        // add data to buffer
-        _dataBuffer.addAll(data);
-
-        // check buffer size
-        if (_dataBuffer.length > _BUFFER_SIZE) {
-          socket.destroy();
-          return;
-        }
-
-        // check for completed message
-        for (int i = 0; i < _dataBuffer.length; i++) {
-          if (_dataBuffer[i] == 0) {
-
-            // get message data and remove from buffer
-            var msgData = List<int>.from(_dataBuffer.getRange(0, i));
-            _dataBuffer.removeRange(0, i + 1);
-
-            // check data length
-            if (msgData.length > 0) {
-
-              // convert to JSON
-              var msgStr = utf8.decode(msgData, allowMalformed: false);
-
-              // build response
-              var res = Response.fromJson(msgStr);
-              this._responses.add(res);
-            }
-          }
-        }
-
-      }, onError: (e) {
-
-        // dispose on listen error
-        this.dispose();
-
-      }, onDone: () {
-
-        // dispose on listen done
-        this.dispose();
-
-      });
 
     }, onError: (e) {
 
       // dispose on connection error
-      this.dispose();
+      dispose();
     });
   }
+
+  Future<Response> getResponse(Socket socket) {
+    // listen to data
+    socket.listen((data) {
+      print(data);
+
+      // cipher
+      if (_cipher != null)
+        _cipher.crypt(data);
+
+      // add data to buffer
+      _dataBuffer.addAll(data);
+
+      // check buffer size
+      if (_dataBuffer.length > _BUFFER_SIZE) {
+        socket.destroy();
+        return null;
+      }
+
+      // check for completed message
+      for (int i = 0; i < _dataBuffer.length; i++) {
+        if (_dataBuffer[i] == 0) {
+
+          // get message data and remove from buffer
+          var msgData = List<int>.from(_dataBuffer.getRange(0, i));
+          _dataBuffer.removeRange(0, i + 1);
+
+          // check data length
+          if (msgData.length > 0) {
+
+            // convert to JSON
+            var msgStr = utf8.decode(msgData, allowMalformed: false);
+
+            // build response
+            var res = Response.fromJson(msgStr);
+            this._responses.add(res);
+            return res;
+          }
+        }
+      }
+      return null;
+
+    }, onError: (e) {
+
+      // dispose on listen error
+      dispose();
+
+    }, onDone: () {
+
+      // dispose on listen done
+      dispose();
+
+    });
+    return null;
+  }
+
 
   void changePass(String pass) {
     if (pass.length > 0)
@@ -133,7 +140,7 @@ class Connection {
     return this._socket != null && !this._disposed;
   }
 
-  Response request(Request req) {
+  Future<Response> request(Request req) {
 
     print("send request");
 
@@ -163,19 +170,12 @@ class Connection {
     this._socket.add(jsonEncoded);
   }
 
-  Response _awaitResponse(int id) {
+  Future<Response> _awaitResponse(int id) async {
     bool timeout = false;
     Timer(_TIMEOUT, () => timeout = true);
     while (_responses.length == 0 && !timeout) {
-      print("wait");
+       return getResponse(_socket);
     }
-    Response response;
-    if (_responses.length >= 1) {
-      response = _responses[0];
-      _responses = [];
-    }
-    print("response");
-    print(response);
-    return response;
+    return null;
   }
 }

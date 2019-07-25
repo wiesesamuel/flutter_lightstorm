@@ -36,9 +36,9 @@ class NetworkController {
     // get connection from pool
     return _connectionPool.get().then((con) {
       // send request with connection and save incoming response
-      Response response = con.request(Request(json, function));
-      con.free();
-      return response;
+      return con.request(Request(json, function)).whenComplete((){
+        con.free();
+      });
     }, onError: (e) {
       print(e);
     });

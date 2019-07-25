@@ -122,7 +122,6 @@ class ConnectionPool {
 
       // create connection with pool resource
       var con = Connection(_host, _port, _pass, resource: resource);
-      await con.onConnect();
       if (con.isDisposed())
         throw new APIError("disposed");
 

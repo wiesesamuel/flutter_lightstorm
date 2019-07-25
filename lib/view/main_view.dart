@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_led_app/controller/controller.dart';
 import 'package:flutter_led_app/models/app_theme.dart';
+import 'package:flutter_led_app/networking/client.dart';
 import 'package:flutter_led_app/view/views.dart';
 
 class MainView extends StatefulWidget {
