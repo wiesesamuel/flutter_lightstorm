@@ -8,7 +8,6 @@ import 'package:flutter_led_app/network/packet/request.dart';
 import 'package:flutter_led_app/network/packet/response.dart';
 import 'package:flutter_led_app/network/util/rc4.dart';
 
-import 'control.dart';
 
 class Connection {
 
@@ -21,19 +20,18 @@ class Connection {
   final int port;
   var resource;
   List<int> _dataBuffer;
-  StreamController<Response> _responses;
-  StreamController<Connection> _connections;
+  List<Response> _responses;
   Socket _socket;
   RC4 _cipher;
   bool _disposed = false;
+  int index;
 
   Connection(this.host, this.port, this.passphrase,
       {this.resource, bool refreshSession=false}) {
 
     // initialize
     _dataBuffer = List<int>();
-    _responses = StreamController<Response>.broadcast();
-    _connections = StreamController<Connection>.broadcast();
+    _responses = List<Response>();
     if (passphrase.length > 0)
       _cipher = RC4(utf8.encode(passphrase));
 
@@ -45,6 +43,7 @@ class Connection {
 
       // listen to data
       socket.listen((data) {
+        print(data);
 
         // cipher
         if (_cipher != null)
@@ -92,24 +91,6 @@ class Connection {
 
       });
 
-      // refresh session
-      bool error = false;
-      if (refreshSession) {
-        try {
-          await controlRefreshSession(this);
-        } on Error {
-          error = true;
-        } on TimeoutException {
-          error = true;
-        }
-      }
-
-      // mark as connected
-      if (!this._connections.isClosed)
-        this._connections.add(this);
-      if (error)
-        this.dispose();
-
     }, onError: (e) {
 
       // dispose on connection error
@@ -127,10 +108,6 @@ class Connection {
   void dispose() {
     if (_socket != null)
       _socket.destroy();
-    if (_responses != null)
-      _responses.close();
-    if (_connections != null)
-      _connections.close();
     this._disposed = true;
     this.free();
   }
@@ -152,31 +129,21 @@ class Connection {
     return this.resource == null;
   }
 
-  Future<Connection> onConnect() {
-    return _connections.stream.first;
-  }
-
   bool isValid() {
     return this._socket != null && !this._disposed;
   }
 
-  Future<Response> request(Request req) {
+  Response request(Request req) {
 
-    // add response listener
-    var res = _awaitResponse(req.id);
+    print("send request");
 
     // write request
     _writeRequest(req);
 
-    // return future response
-    return res.then((res) {
+    print("wrote request");
+    // add response listener
+    return _awaitResponse(req.id);
 
-      // validate first
-      res.validate();
-
-      // return it
-      return res;
-    });
   }
 
   void _writeRequest(Request req) async {
@@ -196,9 +163,19 @@ class Connection {
     this._socket.add(jsonEncoded);
   }
 
-  Future<Response> _awaitResponse(int id) {
-    return _responses.stream.timeout(_TIMEOUT).firstWhere(
-            (res) => res.id == id, orElse: null);
+  Response _awaitResponse(int id) {
+    bool timeout = false;
+    Timer(_TIMEOUT, () => timeout = true);
+    while (_responses.length == 0 && !timeout) {
+      print("wait");
+    }
+    Response response;
+    if (_responses.length >= 1) {
+      response = _responses[0];
+      _responses = [];
+    }
+    print("response");
+    print(response);
+    return response;
   }
-
 }

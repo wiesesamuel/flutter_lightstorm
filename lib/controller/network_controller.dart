@@ -33,35 +33,26 @@ class NetworkController {
     // connect to server
     connect();
 
-    // response
-    Future<Response> response;
-
     // get connection from pool
-    _connectionPool.get().then((con) {
-
+    return _connectionPool.get().then((con) {
       // send request with connection and save incoming response
-      response = con.request(Request(json, function)).whenComplete(() {
-
-        // finished, free connection
-        con.free();
-      });
+      Response response = con.request(Request(json, function));
+      con.free();
+      return response;
     }, onError: (e) {
       print(e);
     });
 
-
-    // return response
-    return response;
   }
 
   List<Stripe> getStripes() {
     //TODO FIX THIS MOTHERFUCKER
     // send server request to get stripes in use
-    Future<Response> response = sendMessage("", "getStripes");
     //sleep(Duration(seconds: 3));
     // work with the actual response
-    response.then((response){
-      print(response.getData());
+    sendMessage("", "getStripes").then((response){
+      print("mtf");
+      print(response);
 
     });
     return null;

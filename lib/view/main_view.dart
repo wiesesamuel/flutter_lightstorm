@@ -13,7 +13,6 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final ReactiveController reactiveController;
-
   _MainViewState(this.reactiveController) {
     reactiveController.updateUI = () {
       setState(() {

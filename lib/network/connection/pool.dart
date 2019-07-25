@@ -3,7 +3,6 @@ import 'package:flutter_led_app/network/util/exceptions.dart';
 import 'package:pool/pool.dart';
 import 'dart:async';
 
-import 'control.dart';
 
 class _ConnectionPoolEntry {
   Connection con;
@@ -108,13 +107,6 @@ class ConnectionPool {
 
             // pass resource
             entry.con.resource = resource;
-
-            // refresh session
-            var diff = DateTime.now().difference(entry.lastRefresh);
-            if (diff > SESSION_REFRESH) {
-              await controlRefreshSession(entry.con);
-              entry.lastRefresh = DateTime.now();
-            }
 
             // return connection
             return entry.con;
