@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_led_app/view/views.dart';
+import 'package:flutter_led_app/views/views.dart';
 
 void main() => runApp(MyApp());
 

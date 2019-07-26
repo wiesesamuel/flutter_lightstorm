@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_led_app/models/button_gen.dart';
 import 'package:flutter_led_app/models/group_controller.dart';
 import 'package:flutter_led_app/models/stripe_controller.dart';
-import 'package:flutter_led_app/networking/client.dart';
 import 'package:flutter_led_app/pin/stripe.dart';
 
 class ModelController {
   // children
-  final Client client = new Client("192.168.0.11", 5000);
+  //final Client client = new Client("192.168.0.11", 5000);
 
   List<Widget> content = [];
 

@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_led_app/controller/controller.dart';
-import 'package:flutter_led_app/models/app_theme.dart';
-import 'package:flutter_led_app/networking/client.dart';
-import 'package:flutter_led_app/view/views.dart';
+part of views;
 
 class MainView extends StatefulWidget {
   final ReactiveController reactiveController = ReactiveController();
@@ -44,10 +40,11 @@ class _MainViewState extends State<MainView> {
                   child: new Text('LED'),
                 ),
                 ListTile(
-                    title: new Text("get"),
-                    trailing: Icon(Icons.get_app),
+                    title: new Text(getViewName(Views.SERVERS)),
+                    trailing: Icon(Icons.cloud),
                     onTap: () => setState(() {
-                      networkController.getStripes();
+                      _setView(Views.SERVERS);
+                      Navigator.of(context).pop();
                     })),
                 ListTile(
                     title: new Text(getViewName(Views.SIMPLE)),

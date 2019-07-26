@@ -1,3 +1,5 @@
+part of ledapi;
+
 class RC4 {
 
   // state

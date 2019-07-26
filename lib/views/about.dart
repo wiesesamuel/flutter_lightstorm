@@ -1,6 +1,4 @@
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+part of views;
 
 class AboutView extends StatefulWidget {
 

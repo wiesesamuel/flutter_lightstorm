@@ -29,7 +29,8 @@ class PinController {
   }
 
   void sendPinState(Pin pin, ModeType mode) {
-    networkController.sendMessage(pin.toJson().toString(), "updatePin");
+    // TODO
+    //networkController.sendMessage(pin.toJson().toString(), "updatePin");
 
     //client.sendRequest("Hey there");
     if (mode == null) {

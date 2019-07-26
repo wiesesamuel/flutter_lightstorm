@@ -1,3 +1,5 @@
+part of ledapi;
+
 class APIError implements Exception {
   String cause;
   APIError(this.cause);

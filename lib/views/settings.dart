@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_led_app/models/app_theme.dart';
-import 'package:flutter_led_app/view/about.dart';
-import 'package:flutter_led_app/view/views.dart';
+part of views;
 
 class Settings {
   static bool darkMode = true;

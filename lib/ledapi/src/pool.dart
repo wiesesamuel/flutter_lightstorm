@@ -1,8 +1,4 @@
-import 'package:flutter_led_app/network/connection/connection.dart';
-import 'package:flutter_led_app/network/util/exceptions.dart';
-import 'package:pool/pool.dart';
-import 'dart:async';
-
+part of ledapi;
 
 class _ConnectionPoolEntry {
   Connection con;
@@ -22,7 +18,7 @@ class ConnectionPool {
   // the pool to limit the amount of concurrent connections
   final _pool = new Pool(16, timeout: Duration(seconds: 3));
 
-  // cache last connection
+  // cache last connections
   final List<_ConnectionPoolEntry> _entries = [];
   StreamController<ConnectionPool> changes;
 
@@ -30,7 +26,6 @@ class ConnectionPool {
   String _host = "";
   int _port = 0;
   String _pass = "";
-
   ConnectionPool() {
     this.changes = StreamController<ConnectionPool>.broadcast();
   }
@@ -108,6 +103,13 @@ class ConnectionPool {
             // pass resource
             entry.con.resource = resource;
 
+            // refresh session
+            var diff = DateTime.now().difference(entry.lastRefresh);
+            if (diff > SESSION_REFRESH) {
+              await controlRefreshSession(entry.con);
+              entry.lastRefresh = DateTime.now();
+            }
+
             // return connection
             return entry.con;
 
@@ -122,6 +124,7 @@ class ConnectionPool {
 
       // create connection with pool resource
       var con = Connection(_host, _port, _pass, resource: resource);
+      await con.onConnect();
       if (con.isDisposed())
         throw new APIError("disposed");
 
