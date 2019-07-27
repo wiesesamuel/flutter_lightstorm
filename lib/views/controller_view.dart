@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_led_app/controller/controller.dart';
-import 'package:flutter_led_app/models/app_theme.dart';
-import 'package:flutter_led_app/pin/mode_type.dart';
+part of views;
 
 class ControllerView extends StatefulWidget {
   @override
@@ -13,6 +10,7 @@ class _ControllerViewState extends State<ControllerView>
   List<Widget> tabs = [];
   List<String> titles = [];
 
+  Timer refreshTimer;
   TabController _tabController;
 
   _ControllerViewState() {
@@ -29,11 +27,25 @@ class _ControllerViewState extends State<ControllerView>
     super.initState();
     _tabController = new TabController(vsync: this, length: tabs.length);
     _tabController.addListener(_updateCurrentMode);
+
+    // update state on open
+    update();
+
+    // periodically poll
+    refreshTimer = Timer.periodic(Duration(milliseconds: 250), (timer) => update());
+  }
+
+  void update() {
+    modelController.updateMembers().then((v) {
+      if (mounted)
+        setState(() {});
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    refreshTimer.cancel();
     super.dispose();
   }
 

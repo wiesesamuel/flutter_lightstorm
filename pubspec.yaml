@@ -27,6 +27,7 @@ dependencies:
   pool: ^1.4.0
   http: ^0.12.0+2
   shared_preferences: ^0.5.1+1
+  synchronized: ^2.1.0+1
   #path_provider: ^1.1.2
 
 dev_dependencies:

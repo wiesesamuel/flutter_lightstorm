@@ -9,17 +9,17 @@ class StripeController extends StatefulWidget {
   // settings
   final Stripe stripe;
   final ReactiveController reactiveController;
+  final List<PinButton> buttons;
 
   StripeController({Key key, @required Stripe stripe})
       : this.stripe = stripe,
+        this.buttons = getPinButtons(stripe.pins),
         reactiveController = ReactiveController(),
         super(key: key);
 
   @override
-  _StripeControllerState createState() => _StripeControllerState(
-      stripe.name,
-      getPinButtons(stripe.pins),
-      reactiveController);
+  _StripeControllerState createState() =>
+      _StripeControllerState(stripe.name, buttons, reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
 
@@ -31,10 +31,34 @@ class StripeController extends StatefulWidget {
   void setGroupMembersStates(int pinGroup, bool state) =>
       reactiveController.setGroupMembersStates(pinGroup, state);
 
+  bool updateStripe(Stripe stripe) {
+    // check if id identical
+    if (this.stripe.id == stripe.id) {
+      // check if pins are identical
+      if (this.stripe.pins.length == stripe.pins.length &&
+          stripe.pins.length == buttons.length) {
+        // check if pins are identical
+        bool pinFound = false;
+        for (var pin in stripe.pins) {
+          pinFound = false;
+          for (var pinButton in buttons) {
+            if (pinButton == null)
+              break;
+            print("pinbutton");
+            print(pinButton);
+            pinFound = pinButton.updatePin(pin);
+            if (pinFound) break;
+          }
+          if (!pinFound) break;
+        }
+        return pinFound;
+      }
+    }
+    return false;
+  }
 }
 
 class _StripeControllerState extends State<StripeController> {
-
   // children
   List<PinButton> buttons;
 

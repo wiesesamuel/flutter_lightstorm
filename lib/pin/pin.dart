@@ -15,8 +15,8 @@ class Pin {
   // state
   int frequency;
   int brightness;
-  List<bool> states = List(ModeType.values.length);
-  List<int> group = [];
+  var states = List(ModeType.values.length);
+  var group = [];
 
   Pin(this.pin_nr, this.id, this.color) {
     setBooleansOnList(states, false);
@@ -30,8 +30,7 @@ class Pin {
   }
 
   void flipState() {
-    states[getCurrentModeIndex()] =
-        !states[getCurrentModeIndex()];
+    states[getCurrentModeIndex()] = !states[getCurrentModeIndex()];
     update();
   }
 
@@ -67,9 +66,20 @@ class Pin {
 
   bool isGroup(int group) => this.group.contains(group);
 
+  bool updatePinValues(Pin pin) {
+    if (id == pin.id) {
+      frequency = pin.frequency;
+      brightness = pin.brightness;
+      states = pin.states;
+      group = pin.group;
+      return true;
+    }
+    return false;
+  }
+
   Pin.fromJson(Map<String, dynamic> json)
       : pin_nr = json['pin_nr'],
-        id = json['id'],
+        id = int.parse(json['id']),
         frequency = json['frequency'],
         brightness = json['brightness'],
         states = json['states'],
@@ -81,9 +91,8 @@ class Pin {
         'id': id,
         'frequency': frequency,
         'brightness': brightness,
-        'states': states,
+        'states': states.toString(),
         'group': group,
         'color': color,
       };
-
 }

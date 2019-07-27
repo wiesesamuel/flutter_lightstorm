@@ -5,7 +5,7 @@ class Connection {
 
   // settings
   static const _TIMEOUT = Duration(seconds: 2);
-  static const _BUFFER_SIZE = 1024 * 8;
+  static const _BUFFER_SIZE = 1024 * 32;
 
   // state
   final String host, pass;

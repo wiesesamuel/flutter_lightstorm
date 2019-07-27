@@ -40,6 +40,13 @@ class _MainViewState extends State<MainView> {
                   child: new Text('LED'),
                 ),
                 ListTile(
+                    title: new Text("get"),
+                    trailing: Icon(Icons.cloud),
+                    onTap: () => setState(() {
+                      _setView(Views.SERVERS);
+                      Navigator.of(context).pop();
+                    })),
+                ListTile(
                     title: new Text(getViewName(Views.SERVERS)),
                     trailing: Icon(Icons.cloud),
                     onTap: () => setState(() {

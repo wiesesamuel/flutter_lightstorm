@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_led_app/ledapi/ledapi.dart';
 import 'package:flutter_led_app/models/button_gen.dart';
 import 'package:flutter_led_app/models/group_controller.dart';
 import 'package:flutter_led_app/models/stripe_controller.dart';
 import 'package:flutter_led_app/pin/stripe.dart';
+import 'package:synchronized/synchronized.dart';
 
 class ModelController {
   // children
@@ -18,6 +20,77 @@ class ModelController {
 
   List<StripeController> stripeController = [];
 
+  final lock = new Lock();
+  bool updateMemebersInProgress = false;
+
+  Future<void> updateMembers() {
+    print("updateMembers");
+    print(stripeController);
+
+    if (updateMemebersInProgress)
+      return null;
+    updateMemebersInProgress = true;
+
+    return lock.synchronized(() {
+      return ConnectionPool.inst.get().then((con) {
+        return getStripes(con).then((res) {
+
+          // update local stripes
+          stripes = [];
+          print("rsv");
+          print(res.getData());
+          res.getData().forEach((stripe) {
+            stripes.add(Stripe.fromJson(stripe));
+          });
+
+          // check if each stripes exists an controller
+          List<int> found = [];
+          for (var controller in stripeController) {
+            if (controller == null) continue;
+            print("controller");
+            print(controller);
+            print("from");
+            print(stripeController);
+
+            bool exists = false;
+            for (int i = 0; i < stripes.length; i++) {
+              exists = controller.updateStripe(stripes[i]);
+              if (exists) {
+                found.add(i);
+                return;
+              }
+            }
+            if (!exists) {
+              stripeController.remove(controller);
+            }
+          }
+
+          // add new controller for non existing stripe controller
+          if (found.length != stripes.length) {
+            for (int i = 0; i < stripes.length; i++) {
+              if (!found.contains(i)) {
+                print("add controller");
+                stripeController.add(StripeController(stripe: stripes[i]));
+              }
+            }
+
+            // update content
+            updateContent();
+          }
+        }, onError: (e) {}
+        ).whenComplete(() {
+          con.free();
+        });
+      }, onError: (e) {});
+    }).whenComplete(() {
+      updateMemebersInProgress = false;
+
+      print("updated");
+      print(stripes);
+      print(stripeController);
+    });
+  }
+
   void updateAllMembers() {
     stripeController.forEach((stripe) {
       stripe.updateAllMembers();
@@ -32,10 +105,6 @@ class ModelController {
 
   List<Widget> getAllMembers() {
     return content;
-  }
-
-  void addStripe(String json) {
-
   }
 
   void unifyPinGroupState(int pinGroup) {
@@ -66,12 +135,16 @@ class ModelController {
     });
   }
 
-  ModelController() {
+  void updateContent() {
+    content = [];
     for (int i = 0; i < groups.length; i++) {
-      content.add(groups[i]);
+      if (groups[i] != null)
+        content.add(groups[i]);
     }
     for (int i = 0; i < stripeController.length; i++) {
-      content.add(stripeController[i]);
+      if (stripeController[i] != null)
+        content.add(stripeController[i]);
     }
+    print(content);
   }
 }

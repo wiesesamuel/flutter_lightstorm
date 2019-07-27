@@ -46,6 +46,12 @@ PinButton getPinButtonAndAddColorGroup(Pin pin) {
         color: _white,
         pin: pin,
       );
+    default:
+      return PinButton(
+        name: "unknown",
+        color: Colors.pink,
+        pin: pin
+      );
   }
 }
 

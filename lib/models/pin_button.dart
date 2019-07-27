@@ -34,6 +34,14 @@ class PinButton extends StatefulWidget {
 
   void setGroupMemberState(int pinGroup, bool state) =>
       reactiveController.setGroupMemberState(pinGroup, state);
+
+  bool updatePin(Pin pin) {
+    if (this.pin.id == pin.id) {
+      this.pin.updatePinValues(pin);
+      return true;
+    }
+    return false;
+  }
 }
 
 class _ColorButtonApp extends State<PinButton> {
