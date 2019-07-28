@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_led_app/controller/controller.dart';
 import 'package:flutter_led_app/models/app_theme.dart';
+import 'package:flutter_led_app/views/views.dart';
 
 class GroupButton extends StatefulWidget {
   final Color color;

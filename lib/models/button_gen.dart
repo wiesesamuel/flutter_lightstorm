@@ -11,48 +11,11 @@ enum PinGroup { R, G, B, W }
 List<PinButton> getPinButtons(List<Pin> pins) {
   List<PinButton> buttons = [];
   pins.forEach((pin) {
-    buttons.add(getPinButtonAndAddColorGroup(pin));
+    buttons.add(PinButton(
+      pin: pin,
+    ));
   });
   return buttons;
-}
-
-PinButton getPinButtonAndAddColorGroup(Pin pin) {
-  switch (pin.color) {
-    case "red":
-      pin.addGroup(PinGroup.R.index);
-      return PinButton(
-        name: "Red",
-        color: Colors.red,
-        pin: pin,
-      );
-    case "green":
-      pin.addGroup(PinGroup.G.index);
-      return PinButton(
-        name: "Green",
-        color: Colors.green,
-        pin: pin,
-      );
-    case "blue":
-      pin.addGroup(PinGroup.B.index);
-      return PinButton(
-        name: "Blue",
-        color: _blue,
-        pin: pin,
-      );
-    case "white":
-      pin.addGroup(PinGroup.W.index);
-      return PinButton(
-        name: "White",
-        color: _white,
-        pin: pin,
-      );
-    default:
-      return PinButton(
-        name: "unknown",
-        color: Colors.pink,
-        pin: pin
-      );
-  }
 }
 
 GroupButton getGroupButtonSingle(int pinGroup) {

@@ -10,7 +10,7 @@ class Stripe {
   Stripe.fromJson(Map<String, dynamic> json) {
     pins = [];
     name = json['name'];
-    id = int.parse(json['id']);
+    id = json['id'];
     for (var value in json['pins']) {
       pins.add(Pin.fromJson(value));
     }

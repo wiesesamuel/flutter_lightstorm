@@ -8,6 +8,15 @@ Future<void> controlRefreshSession(Connection con) {
   });
 }
 
+Future<void> updatePin(Connection con, Pin pin) {
+  var rnd = new Random();
+  var req = Request("led", "setPin", id: rnd.nextInt(pow(2, 32)));
+  req.addParam(pin.toJson());
+  return con.request(req).then((res) {
+    return res;
+  });
+}
+
 Future<Response> getStripes(Connection con) {
   var rnd = new Random();
   var req = Request("led", "getStripes", id: rnd.nextInt(pow(2, 32)));

@@ -5,18 +5,16 @@ import 'package:flutter_led_app/pin/mode_type.dart';
 import 'package:flutter_led_app/pin/pin.dart';
 
 class PinButton extends StatefulWidget {
-  final Color color;
-  final String name;
   final Pin pin;
   final ReactiveController reactiveController;
 
-  PinButton({Key key, @required this.color, @required this.name, @required this.pin})
+  PinButton({Key key, @required this.pin})
       : reactiveController = ReactiveController(),
         super(key: key);
 
   @override
   _ColorButtonApp createState() {
-    return _ColorButtonApp(color, name, pin, reactiveController);
+    return _ColorButtonApp(pin, reactiveController);
   }
 
   void toggleStatus() => reactiveController.toggleStatus();
@@ -55,13 +53,12 @@ class _ColorButtonApp extends State<PinButton> {
   Color mainFrontColor = Colors.grey;
   Color disabledFrontColor = Colors.black;
   Color inUseFrontColor = Colors.black;
-  final String name;
 
   // functions
   final ReactiveController reactiveController;
 
   _ColorButtonApp(
-      this.mainFrontColor, this.name, this.pin, this.reactiveController) {
+      this.pin, this.reactiveController) {
     unifyLists(pressed, pin.states);
     setBooleansOnList(disabled, false);
     reactiveController.toggleStatus = () {
@@ -101,6 +98,7 @@ class _ColorButtonApp extends State<PinButton> {
     reactiveController.setGroupMemberState = (int pinGroup, bool state) {
       if (pin.isGroup(pinGroup)) reactiveController.setState(state);
     };
+    mainFrontColor = Color(pin.color);
     disabledFrontColor = mainFrontColor.withOpacity(0.7);
     inUseFrontColor = mainFrontColor.withOpacity(0.2);
   }
@@ -117,7 +115,7 @@ class _ColorButtonApp extends State<PinButton> {
             });
           },
           padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Text(name),
+          child: Text(pin.name),
           textColor: getTextColor(),
         ));
   }

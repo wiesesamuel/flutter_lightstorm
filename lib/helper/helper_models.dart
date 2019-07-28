@@ -1,6 +1,6 @@
-import 'package:flutter_led_app/controller/controller.dart';
 import 'package:flutter_led_app/pin/mode_type.dart';
 import 'package:flutter_led_app/pin/pin.dart';
+import 'package:flutter_led_app/views/views.dart';
 
 void setBooleansOnList(List list, bool value) {
   for(int i = 0; i < list.length; i++) {
@@ -17,11 +17,11 @@ void unifyLists(List target, List source) {
 }
 
 int getCurrentModeIndex() {
-  return pinController.currentModeType.index;
+  return modelController.currentModeType.index;
 }
 
 int getCurrentHighestPrioritizedModeInUse(Pin pin) {
-  ModeType inUse = pinController.getHighestPrioritizedModeInUse(pin);
+  ModeType inUse = modelController.getHighestPrioritizedModeInUse(pin);
   if (inUse == null)
     return -1;
   return inUse.index;

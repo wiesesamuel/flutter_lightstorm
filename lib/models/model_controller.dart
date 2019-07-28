@@ -1,44 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_led_app/helper/helper_models.dart';
 import 'package:flutter_led_app/ledapi/ledapi.dart';
 import 'package:flutter_led_app/models/button_gen.dart';
 import 'package:flutter_led_app/models/group_controller.dart';
 import 'package:flutter_led_app/models/stripe_controller.dart';
+import 'package:flutter_led_app/pin/mode_type.dart';
+import 'package:flutter_led_app/pin/pin.dart';
 import 'package:flutter_led_app/pin/stripe.dart';
 import 'package:synchronized/synchronized.dart';
 
 class ModelController {
-  // children
-  //final Client client = new Client("192.168.0.11", 5000);
+  ModeType currentModeType = ModeType.OnOff;
+  List<bool> masterStates = List(ModeType.values.length);
 
+  ModelController() {
+    setBooleansOnList(masterStates, true);
+  }
+
+  void flipMasterState(ModeType mode) {
+    masterStates[mode.index] = !masterStates[mode.index];
+  }
+
+  ModeType getHighestPrioritizedModeInUse(Pin pin) {
+    ModeType modeInUse;
+    for (int i = 0; i < ModeType.values.length; i++) {
+      if (masterStates[i] && pin.states[i]) modeInUse = ModeType.values[i];
+    }
+    return modeInUse;
+  }
+
+  void setCurrentModeType(ModeType modeType) {
+    currentModeType = modeType;
+    //modelController.updateAllMembers();
+  }
+
+  Future<void> update(Pin pin) {
+    return lock.synchronized(() {
+      return ConnectionPool.inst.get().then((con) {
+        return updatePin(con, pin)
+            .then((res) {}, onError: (e) {})
+            .whenComplete(() {
+          con.free();
+        });
+      }, onError: (e) {});
+    }).whenComplete(() {});
+  }
+
+  // content
   List<Widget> content = [];
-
+  List<Stripe> stripes = [];
+  List<StripeController> stripeController = [];
   List<GroupController> groups = [
     GroupController([PinGroup.W, PinGroup.R, PinGroup.G, PinGroup.B]),
   ];
 
-  List<Stripe> stripes = [];
-
-  List<StripeController> stripeController = [];
-
+  // network
   final lock = new Lock();
   bool updateMemebersInProgress = false;
 
   Future<void> updateMembers() {
-    print("updateMembers");
-    print(stripeController);
-
-    if (updateMemebersInProgress)
-      return null;
+    if (updateMemebersInProgress) return null;
     updateMemebersInProgress = true;
 
     return lock.synchronized(() {
       return ConnectionPool.inst.get().then((con) {
         return getStripes(con).then((res) {
-
           // update local stripes
           stripes = [];
-          print("rsv");
-          print(res.getData());
           res.getData().forEach((stripe) {
             stripes.add(Stripe.fromJson(stripe));
           });
@@ -47,10 +75,6 @@ class ModelController {
           List<int> found = [];
           for (var controller in stripeController) {
             if (controller == null) continue;
-            print("controller");
-            print(controller);
-            print("from");
-            print(stripeController);
 
             bool exists = false;
             for (int i = 0; i < stripes.length; i++) {
@@ -69,7 +93,6 @@ class ModelController {
           if (found.length != stripes.length) {
             for (int i = 0; i < stripes.length; i++) {
               if (!found.contains(i)) {
-                print("add controller");
                 stripeController.add(StripeController(stripe: stripes[i]));
               }
             }
@@ -77,17 +100,12 @@ class ModelController {
             // update content
             updateContent();
           }
-        }, onError: (e) {}
-        ).whenComplete(() {
+        }, onError: (e) {}).whenComplete(() {
           con.free();
         });
       }, onError: (e) {});
     }).whenComplete(() {
       updateMemebersInProgress = false;
-
-      print("updated");
-      print(stripes);
-      print(stripeController);
     });
   }
 
@@ -138,12 +156,10 @@ class ModelController {
   void updateContent() {
     content = [];
     for (int i = 0; i < groups.length; i++) {
-      if (groups[i] != null)
-        content.add(groups[i]);
+      if (groups[i] != null) content.add(groups[i]);
     }
     for (int i = 0; i < stripeController.length; i++) {
-      if (stripeController[i] != null)
-        content.add(stripeController[i]);
+      if (stripeController[i] != null) content.add(stripeController[i]);
     }
     print(content);
   }

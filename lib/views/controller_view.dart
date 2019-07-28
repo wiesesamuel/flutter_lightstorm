@@ -1,5 +1,7 @@
 part of views;
 
+final ModelController modelController = ModelController();
+
 class ControllerView extends StatefulWidget {
   @override
   _ControllerViewState createState() => _ControllerViewState();
@@ -18,7 +20,9 @@ class _ControllerViewState extends State<ControllerView>
       String name = modeTypeHelper.getName(value);
       titles.add(name);
       IconData iconData = modeTypeHelper.getIconData(value);
-      tabs.add(Tab(icon: Icon(iconData),));
+      tabs.add(Tab(
+        icon: Icon(iconData),
+      ));
     }
   }
 
@@ -32,14 +36,24 @@ class _ControllerViewState extends State<ControllerView>
     update();
 
     // periodically poll
-    refreshTimer = Timer.periodic(Duration(milliseconds: 250), (timer) => update());
+    refreshTimer =
+        Timer.periodic(Duration(milliseconds: 250), (timer) => update());
   }
 
   void update() {
     modelController.updateMembers().then((v) {
-      if (mounted)
-        setState(() {});
+      if (mounted) setState(() {});
     });
+    return;
+    try {
+      modelController.updateMembers().then((v) {
+        if (mounted) setState(() {});
+      }, onError: (e) {
+        print(e);
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -54,23 +68,23 @@ class _ControllerViewState extends State<ControllerView>
     return DefaultTabController(
         length: titles.length,
         child: Scaffold(
-            appBar: TabBar(
-              //isScrollable: true,
-              tabs: tabs,
-              controller: _tabController,
-              labelColor: getDefaultIconColor(),
+          appBar: TabBar(
+            //isScrollable: true,
+            tabs: tabs,
+            controller: _tabController,
+            labelColor: getDefaultIconColor(),
+          ),
+          // components
+          body: Center(
+            child: ListView(
+              children: modelController.getAllMembers(),
             ),
-            // components
-            body: Center(
-              child: ListView(
-                children: modelController.getAllMembers(),
-              ),
-            ),
+          ),
         ));
   }
 
   void _updateCurrentMode() {
-    pinController.setCurrentModeType(ModeType.values[_tabController.index]);
+    modelController.setCurrentModeType(ModeType.values[_tabController.index]);
     modelController.updateUI();
   }
 }

@@ -3,11 +3,11 @@ library views;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_led_app/models/model_controller.dart';
 import 'package:flutter_led_app/ledapi/ledapi.dart';
 import 'package:flutter_led_app/pin/mode_type.dart';
 import 'package:flutter_led_app/platform/platform.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_led_app/controller/controller.dart';
 import 'package:flutter_led_app/models/app_theme.dart';
 
 part 'main_view.dart';

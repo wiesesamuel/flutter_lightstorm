@@ -44,8 +44,6 @@ class StripeController extends StatefulWidget {
           for (var pinButton in buttons) {
             if (pinButton == null)
               break;
-            print("pinbutton");
-            print(pinButton);
             pinFound = pinButton.updatePin(pin);
             if (pinFound) break;
           }
