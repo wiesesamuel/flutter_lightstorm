@@ -8,10 +8,32 @@ Future<void> controlRefreshSession(Connection con) {
   });
 }
 
+Future<void> updateModule(Connection con, var member) {
+  if (member is Pin)
+    return updatePin(con, member);
+  else
+    if (member is Stripe)
+      return updateStripe(con, member);
+    else
+      return null;
+}
+
 Future<void> updatePin(Connection con, Pin pin) {
   var rnd = new Random();
   var req = Request("led", "setPin", id: rnd.nextInt(pow(2, 32)));
+
+  print("update pin " + pin.pin_nr.toString() + " - " + pin.id.toString());
+
   req.addParam(pin.toJson());
+  return con.request(req).then((res) {
+    return res;
+  });
+}
+
+Future<void> updateStripe(Connection con, Stripe stripe) {
+  var rnd = new Random();
+  var req = Request("led", "setStripe", id: rnd.nextInt(pow(2, 32)));
+  req.addParam(stripe.toJson());
   return con.request(req).then((res) {
     return res;
   });

@@ -8,10 +8,10 @@ class Pin {
   static const int _MAX_BRIGHTNESS = 100;
 
   // parameters
-  final int pin_nr;
+  int pin_nr;
   final int id;
   var color;
-  final String name;
+  String name;
 
   // state
   int frequency;
@@ -36,7 +36,7 @@ class Pin {
   }
 
   void update() {
-    modelController.update(this);
+    modelController.updateMember(this);
   }
 
   int getFrequency() => frequency;

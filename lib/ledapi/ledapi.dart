@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_led_app/pin/pin.dart';
+import 'package:flutter_led_app/pin/stripe.dart';
 import 'package:pool/pool.dart';
 part "src/connection.dart";
 part "src/request.dart";

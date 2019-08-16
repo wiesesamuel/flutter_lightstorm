@@ -36,6 +36,7 @@ class PinButton extends StatefulWidget {
   bool updatePin(Pin pin) {
     if (this.pin.id == pin.id) {
       this.pin.updatePinValues(pin);
+      reactiveController.setStates(pin.states);
       return true;
     }
     return false;
@@ -46,7 +47,7 @@ class _ColorButtonApp extends State<PinButton> {
   final Pin pin;
 
   // states
-  List<bool> pressed = List(ModeType.values.length);
+  var pressed = List(ModeType.values.length);
   List<bool> disabled = List(ModeType.values.length);
 
   // depiction
@@ -80,6 +81,11 @@ class _ColorButtonApp extends State<PinButton> {
         pressed[getCurrentModeIndex()] = state;
         pin.setState(
             pressed[getCurrentModeIndex()] && !disabled[getCurrentModeIndex()]);
+      });
+    };
+    reactiveController.setStates = (List state) {
+      setState(() {
+        pressed = state;
       });
     };
     reactiveController.update = () {
@@ -147,6 +153,7 @@ class ReactiveController {
   Function updateUI;
   Function flipState;
   Function setState;
+  Function setStates;
   Function getGroupMemberState;
   Function setGroupMemberState;
 }

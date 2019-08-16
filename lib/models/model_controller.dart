@@ -34,10 +34,10 @@ class ModelController {
     //modelController.updateAllMembers();
   }
 
-  Future<void> update(Pin pin) {
+  Future<void> updateMember(var member) {
     return lock.synchronized(() {
       return ConnectionPool.inst.get().then((con) {
-        return updatePin(con, pin)
+        return updateModule(con, member)
             .then((res) {}, onError: (e) {})
             .whenComplete(() {
           con.free();

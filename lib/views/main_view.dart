@@ -10,6 +10,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final ReactiveController reactiveController;
+
   _MainViewState(this.reactiveController) {
     reactiveController.updateUI = () {
       setState(() {
@@ -43,16 +44,16 @@ class _MainViewState extends State<MainView> {
                     title: new Text("get"),
                     trailing: Icon(Icons.cloud),
                     onTap: () => setState(() {
-                      _setView(Views.SERVERS);
-                      Navigator.of(context).pop();
-                    })),
+                          _setView(Views.SERVERS);
+                          Navigator.of(context).pop();
+                        })),
                 ListTile(
                     title: new Text(getViewName(Views.SERVERS)),
                     trailing: Icon(Icons.cloud),
                     onTap: () => setState(() {
-                      _setView(Views.SERVERS);
-                      Navigator.of(context).pop();
-                    })),
+                          _setView(Views.SERVERS);
+                          Navigator.of(context).pop();
+                        })),
                 ListTile(
                     title: new Text(getViewName(Views.SIMPLE)),
                     trailing: Icon(Icons.sentiment_satisfied),
@@ -87,6 +88,10 @@ class _MainViewState extends State<MainView> {
     if (_currentView == view) return;
     _currentView = view;
     _viewWidget = getView(_currentView);
+  }
+
+  Views getCurrentView() {
+    return _currentView;
   }
 }
 

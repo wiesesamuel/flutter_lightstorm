@@ -3,6 +3,7 @@ import 'package:flutter_led_app/helper/helper_models.dart';
 import 'package:flutter_led_app/models/button_gen.dart';
 import 'package:flutter_led_app/pin/mode_type.dart';
 import 'package:flutter_led_app/pin/stripe.dart';
+import 'package:flutter_led_app/views/views.dart';
 import 'pin_button.dart';
 
 class StripeController extends StatefulWidget {
@@ -19,7 +20,7 @@ class StripeController extends StatefulWidget {
 
   @override
   _StripeControllerState createState() =>
-      _StripeControllerState(stripe.name, buttons, reactiveController);
+      _StripeControllerState(stripe, buttons, reactiveController);
 
   void updateAllMembers() => reactiveController.updateAllMembers();
 
@@ -42,8 +43,7 @@ class StripeController extends StatefulWidget {
         for (var pin in stripe.pins) {
           pinFound = false;
           for (var pinButton in buttons) {
-            if (pinButton == null)
-              break;
+            if (pinButton == null) break;
             pinFound = pinButton.updatePin(pin);
             if (pinFound) break;
           }
@@ -67,9 +67,9 @@ class _StripeControllerState extends State<StripeController> {
   final ReactiveController reactiveController;
 
   // depiction
-  String name;
+  final Stripe stripe;
 
-  _StripeControllerState(this.name, this.buttons, this.reactiveController) {
+  _StripeControllerState(this.stripe, this.buttons, this.reactiveController) {
     setBooleansOnList(pressed, true);
     reactiveController.updateAllMembers = () {
       buttons.forEach((button) {
@@ -104,7 +104,7 @@ class _StripeControllerState extends State<StripeController> {
       child: ListTile(
         contentPadding: null,
         dense: true,
-        title: Text(name),
+        title: Text(stripe.name),
         trailing: Container(
             //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
             child: Row(
@@ -121,6 +121,52 @@ class _StripeControllerState extends State<StripeController> {
             });
           });
         },
+        onLongPress: () => _showOptions(context),
+      ),
+    );
+  }
+
+  void _showOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => SimpleDialog(
+        children: <Widget>[
+          SimpleDialogOption(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.edit),
+                  Container(
+                    margin: EdgeInsets.only(left: 5),
+                    child: Text('Edit \'${stripe.name}\''),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => StripeEditView(stripe),
+                  ),
+                );
+              }),
+          SimpleDialogOption(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(Icons.delete),
+                Container(
+                  margin: EdgeInsets.only(left: 5),
+                  child: Text('Remove'),
+                ),
+              ],
+            ),
+            onPressed: () {
+              //setState(() => ;// TODO remove stripe and save on server
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       ),
     );
   }
